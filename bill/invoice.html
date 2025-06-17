@@ -84,6 +84,20 @@
       min-width: 30px;
     }
 
+img {
+  user-drag: none;        /* Safari */
+  -webkit-user-drag: none; /* Chrome & Edge */
+  pointer-events: none;
+}
+
+/* Disable text selection */
+body {
+  user-select: none;        /* Standard */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* IE/Edge */
+}
+
     @media print {
       .print-btn {
         display: none;
@@ -93,7 +107,7 @@
 </head>
 <body>
   <div id="invoice" class="invoice">
-    <img src="https://deepakdesigns.thedteam.in/assets/images/dd-logo-2025.png" alt="Logo" class="logo" />
+    <img src="https://deepakdesigns.thedteam.in/assets/images/dd-logo-2025.png" ondragstart="return false;" alt="Logo" class="logo" />
     <div class="center bold">Deepak Designs</div>
     <div class="center" style="font-size: smaller;">#different by designs!</div>
     <div class="center" style="font-size: smaller">Chandapura, Bengaluru-560081 KA:29</div>
@@ -185,5 +199,34 @@
     updateQR();
     updateTotal();
   </script>
+
+<script>
+  // Disable right-click
+  document.addEventListener("contextmenu", function (e) {
+    e.preventDefault();
+  });
+
+  // Block common developer tools shortcuts
+  document.addEventListener("keydown", function (e) {
+    // F12
+    if (e.key === "F12") {
+      e.preventDefault();
+    }
+
+    // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+S
+    if (
+      (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J")) || 
+      (e.ctrlKey && (e.key === "U" || e.key === "S"))
+    ) {
+      e.preventDefault();
+    }
+
+    // Ctrl+Shift+C (Inspect Element shortcut)
+    if (e.ctrlKey && e.shiftKey && e.key === "C") {
+      e.preventDefault();
+    }
+  });
+</script>
+
 </body>
 </html>
