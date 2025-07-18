@@ -10,6 +10,7 @@
       font-family: monospace;
       background: #fff;
       padding: 10px;
+      user-select: none;
     }
 
     .invoice {
@@ -82,14 +83,9 @@
       float: right;
     }
 
-      #sealImage {
+    #sealImage {
       width: 80px;
       opacity: 0.6;
-    }
-
-    .footercards {
-      text-align:  center;
-      margin-top: 10px;
     }
 
     [contenteditable] {
@@ -99,19 +95,9 @@
       min-width: 30px;
     }
 
-img {
-  -webkit-user-drag: none;        /* Safari */
-  -webkit-user-drag: none; /* Chrome & Edge */
-  pointer-events: none;
-}
-
-/* Disable text selection */
-body {
-  user-select: none;        /* Standard */
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none;    /* Firefox */
-  -ms-user-select: none;     /* IE/Edge */
-}
+    img {
+      pointer-events: none;
+    }
 
     @media print {
       .print-btn {
@@ -122,7 +108,7 @@ body {
 </head>
 <body>
   <div id="invoice" class="invoice">
-    <img src="https://deepakdesigns.thedteam.in/assets/images/dd-logo-2025.png" ondragstart="return false;" alt="Logo" class="logo" />
+    <img src="https://deepakdesigns.thedteam.in/assets/images/dd-logo-2025.png" alt="Logo" class="logo" />
     <div class="center bold">Deepak Designs</div>
     <div class="center" style="font-size: smaller;">#different by designs!</div>
     <div class="center" style="font-size: smaller">Chandapura, Bengaluru-560081 KA:29</div>
@@ -130,10 +116,10 @@ body {
     <div class="center" style="font-size: 9px"><b>🔍</b>deepakdesigns.thedteam.in</div>      
     <hr />
     <div>Date: <span id="date" style="font-size: smaller;"></span></div>
-    <div>Invoice #: <span id="invoiceNum" contenteditable="true" style="font-size: smaller;">INV-DD0318072025</span></div>
-    <div>Customer: <span contenteditable="true" style="font-size: smaller;">Akshith L V</span></div>
-    <div>Address: <span contenteditable="true" style="font-size: smaller;">Chandapura, Bengaluru:560081</span></div>
-    <div>Phone: <span contenteditable="true" style="font-size: smaller;">8296579640</span></div>
+    <div>Invoice #: <span id="invoiceNum" contenteditable="true" oninput="updateQR()" style="font-size: smaller;">INV-DD0318072025</span></div>
+    <div>Customer: <span id="customerName" contenteditable="true" oninput="updateQR()" style="font-size: smaller;">Akshith L V</span></div>
+    <div>Address: <span id="customerAddress" contenteditable="true" oninput="updateQR()" style="font-size: smaller;">Chandapura, Bengaluru:560081</span></div>
+    <div>Phone: <span id="customerPhone" contenteditable="true" oninput="updateQR()" style="font-size: smaller;">8296579640</span></div>
 
     <table>
       <thead>
@@ -145,32 +131,27 @@ body {
       </thead>
       <tbody id="itemRows">
         <tr>
-          <td><span contenteditable="true" oninput="updateTotal()">Design</span></td>
-          <td><span contenteditable="true" oninput="updateTotal()">1</span></td>
-          <td><span contenteditable="true" oninput="updateTotal()">300</span></td>
+          <td><span contenteditable="true" oninput="updateTotal(); updateQR();">Design</span></td>
+          <td><span contenteditable="true" oninput="updateTotal(); updateQR();">1</span></td>
+          <td><span contenteditable="true" oninput="updateTotal(); updateQR();">300</span></td>
         </tr>
       </tbody>
     </table>
 
     <div class="total">
-      <div>Subtotal: ₹<span id="subtotalAmount">0.00</span></div>
-            <div class="seal">
-      <img id="sealImage" src="https://deepakdesigns.thedteam.in/bill/paid-stamp.png" alt="Seal" />
-    </div>
-      <div>Discount: -₹<span id="discount" contenteditable="true" oninput="updateTotal()">50.00</span></div>
+      <div>Subtotal: ₹<span id="subtotalAmount" oninput="updateQR()">0.00</span></div>
+      <div class="seal"><img id="sealImage" src="https://deepakdesigns.thedteam.in/bill/paid-stamp.png" alt="Seal" /></div>
+      <div>Discount: -₹<span id="discount" contenteditable="true" oninput="updateTotal(); updateQR();">50.00</span></div>
       <div>Total: ₹<span id="totalAmount">0.00</span></div>
       <div>Paid: ₹<span id="paidAmount">0.00</span></div>
-      <div>Mode: <span contenteditable="true">UPI***000</span></div>
+      <div>Mode: <span id="paymentMode" contenteditable="true" oninput="updateQR()">UPI***000</span></div>
     </div>
-
-
 
     <div class="footer">Thank you for designing with us!</div>
 
     <div class="qr">
       <img id="qrImage" src="" alt="QR Code"/>
     </div>
-
   </div>
 
   <div class="print-btn">
@@ -179,7 +160,6 @@ body {
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-
   <script>
     document.getElementById("date").textContent = new Date().toLocaleString();
 
@@ -201,23 +181,54 @@ body {
       document.getElementById("paidAmount").innerText = total.toFixed(2);
     }
 
-      async function updateQR() {
-    const inv = document.getElementById("invoiceNum").innerText.trim();
-    const url = `https://api.qrserver.com/v1/create-qr-code/?data=Invoice%20${encodeURIComponent(inv)}&size=100x100`;
+    async function updateQR() {
+      const date = document.getElementById("date").innerText.trim();
+      const inv = document.getElementById("invoiceNum").innerText.trim();
+      const cust = document.getElementById("customerName").innerText.trim();
+      const addr = document.getElementById("customerAddress").innerText.trim();
+      const phone = document.getElementById("customerPhone").innerText.trim();
+      const subtotal = document.getElementById("subtotalAmount").innerText.trim();
+      const discount = document.getElementById("discount").innerText.trim();
+      const total = document.getElementById("totalAmount").innerText.trim();
+      const mode = document.getElementById("paymentMode").innerText.trim();
+      
 
-    try {
-      const res = await fetch(url);
-      const blob = await res.blob();
-      const reader = new FileReader();
+      let itemsData = "";
+      document.querySelectorAll("#itemRows tr").forEach((row, i) => {
+        const item = row.children[0].innerText.trim();
+        const qty = row.children[1].innerText.trim();
+        const price = row.children[2].innerText.trim();
+        itemsData += `Item ${i+1}: ${item}, Qty: ${qty}, Price: ₹${price}`;
+      });
 
-      reader.onloadend = () => {
-        document.getElementById("qrImage").src = reader.result;
-      };
-      reader.readAsDataURL(blob);
-    } catch (err) {
-      console.error("QR fetch error:", err);
+      const qrText = 
+`Date: ${date}
+Invoice #: ${inv}
+Customer: ${cust}
+Address: ${addr}
+Phone: ${phone}
+${itemsData}
+Subtotal: ₹${subtotal}
+Discount: -₹${discount}
+Total: ₹${total}
+Paid via: ${mode}`;
+
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(qrText)}&size=115x115&format=svg`;
+      
+
+      try {
+        const res = await fetch(qrUrl);
+        const blob = await res.blob();
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+          document.getElementById("qrImage").src = reader.result;
+        };
+        reader.readAsDataURL(blob);
+      } catch (err) {
+        console.error("QR fetch error:", err);
+      }
     }
-  }
 
     function downloadPNG() {
       html2canvas(document.getElementById("invoice"), { scale: 3 }).then(canvas => {
@@ -228,38 +239,8 @@ body {
       });
     }
 
-    document.getElementById("invoiceNum").addEventListener("input", updateQR);
-    updateQR();
     updateTotal();
+    updateQR();
   </script>
-
-<script>
-  // Disable right-click
-  document.addEventListener("contextmenu", function (e) {
-    e.preventDefault();
-  });
-
-  // Block common developer tools shortcuts
-  document.addEventListener("keydown", function (e) {
-    // F12
-    if (e.key === "F12") {
-      e.preventDefault();
-    }
-
-    // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+S
-    if (
-      (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J")) || 
-      (e.ctrlKey && (e.key === "U" || e.key === "S"))
-    ) {
-      e.preventDefault();
-    }
-
-    // Ctrl+Shift+C (Inspect Element shortcut)
-    if (e.ctrlKey && e.shiftKey && e.key === "C") {
-      e.preventDefault();
-    }
-  });
-</script>
-
 </body>
 </html>
