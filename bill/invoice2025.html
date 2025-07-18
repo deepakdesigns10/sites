@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Invoice - TDT 2025</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: monospace;
+      background: #fff;
+      padding: 10px;
+    }
+
+    .invoice {
+      width: 58mm;
+      max-width: 100%;
+      border: 1px dashed #ccc;
+      padding: 10px;
+      margin: 0 auto;
+      font-size: 12px;
+      line-height: 1.4;
+      background: #fff;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .bold {
+      font-weight: bold;
+    }
+
+    .logo {
+      width: 50px;
+      margin: auto;
+      display: block;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 2px;
+      text-align: left;
+    }
+
+    .total {
+      margin-top: 10px;
+      border-top: 1px dashed #000;
+      padding-top: 5px;
+    }
+
+    .footer {
+      margin-top: 20px;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .print-btn {
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    button {
+      padding: 5px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    .qr {
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .seal {
+      margin-top: 0px;
+      float: right;
+    }
+
+      #sealImage {
+      width: 80px;
+      opacity: 0.6;
+    }
+
+    .footercards {
+      text-align:  center;
+      margin-top: 10px;
+    }
+
+    [contenteditable] {
+      padding: 2px;
+      border-bottom: 1px dashed #aaa;
+      display: inline-block;
+      min-width: 30px;
+    }
+
+img {
+  -webkit-user-drag: none;        /* Safari */
+  -webkit-user-drag: none; /* Chrome & Edge */
+  pointer-events: none;
+}
+
+/* Disable text selection */
+body {
+  user-select: none;        /* Standard */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* IE/Edge */
+}
+
+    @media print {
+      .print-btn {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="invoice" class="invoice">
+    <img src="https://deepakdesigns.thedteam.in/assets/images/dd-logo-2025.png" ondragstart="return false;" alt="Logo" class="logo" />
+    <div class="center bold">Deepak Designs</div>
+    <div class="center" style="font-size: smaller;">#different by designs!</div>
+    <div class="center" style="font-size: smaller">Chandapura, Bengaluru-560081 KA:29</div>
+    <div class="center" style="font-size: smaller"><b>📞</b> 7019043569</div>
+    <div class="center" style="font-size: smaller"><b>📧</b> deepakdesigns10@gmail.com</div>
+    <div class="center" style="font-size: smaller"><b>🔍</b> deepakdesigns.thedteam.in</div>      
+    <hr />
+    <div>Date: <span id="date" style="font-size: smaller;"></span></div>
+    <div>Invoice #: <span id="invoiceNum" contenteditable="true" style="font-size: smaller;">INV-0117062025</span></div>
+    <div>Customer: <span contenteditable="true" style="font-size: smaller;">Akshith L V</span></div>
+    <div>Address: <span contenteditable="true" style="font-size: smaller;">Chandapura, Bengaluru-560081</span></div>
+    <div>Phone: <span contenteditable="true" style="font-size: smaller;">8296579640</span></div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Qty</th>
+          <th>Price (₹)</th>
+        </tr>
+      </thead>
+      <tbody id="itemRows">
+        <tr>
+          <td><span contenteditable="true" oninput="updateTotal()">Design</span></td>
+          <td><span contenteditable="true" oninput="updateTotal()">1</span></td>
+          <td><span contenteditable="true" oninput="updateTotal()">300</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="total">
+      <div>Subtotal: ₹<span id="subtotalAmount">0.00</span></div>
+            <div class="seal">
+      <img id="sealImage" src="https://static.vecteezy.com/system/resources/previews/021/433/027/non_2x/paid-rubber-stamp-free-png.png" alt="Seal" />
+    </div>
+      <div>Discount: -₹<span id="discount" contenteditable="true" oninput="updateTotal()">50.00</span></div>
+      <div>Total: ₹<span id="totalAmount">0.00</span></div>
+      <div>Paid: ₹<span id="paidAmount">0.00</span></div>
+      <div>Mode: <span contenteditable="true">UPI</span></div>
+    </div>
+
+
+
+    <div class="footer">Thank you for designing with us!</div>
+
+    <div class="qr">
+      <img id="qrImage" src="" alt="QR Code"/>
+    </div>
+
+    <div class="footercards">
+		        
+<a href="https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user" target="_blank">
+                        <img src="https://thedteam.in/assets/img/card2.png" alt="" class="footercard" width="40"></a>
+<a href="https://play.google.com/store/apps/details?id=com.phonepe.app&amp;hl=en_US&amp;gl=US" target="_blank">
+                        <img src="https://thedteam.in/assets/img/card3.png" alt="" class="footercard" width="40"></a>
+<a href="https://play.google.com/store/apps/details?id=in.org.npci.upiapp" target="_blank">
+                        <img src="https://thedteam.in/assets/img/card4.png" alt="" class="footercard" width="40" ></a>
+<a href="https://play.google.com/store/apps/details?id=net.one97.paytm" target="_blank">
+                        <img src="https://thedteam.in/assets/img/card1.png" alt="" class="footercard" width="40"></a>
+                    </div>
+
+  </div>
+
+  <div class="print-btn">
+    <button onclick="window.print()">🖨️ Print</button>
+    <button onclick="downloadPNG()">⬇️ Download PNG</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+  <script>
+    document.getElementById("date").textContent = new Date().toLocaleString();
+
+    function updateTotal() {
+      let subtotal = 0;
+      const rows = document.querySelectorAll("#itemRows tr");
+
+      rows.forEach(row => {
+        const qty = parseFloat(row.children[1].innerText) || 0;
+        const price = parseFloat(row.children[2].innerText) || 0;
+        subtotal += qty * price;
+      });
+
+      const discountVal = parseFloat(document.getElementById("discount").innerText) || 0;
+      const total = subtotal - discountVal;
+
+      document.getElementById("subtotalAmount").innerText = subtotal.toFixed(2);
+      document.getElementById("totalAmount").innerText = total.toFixed(2);
+      document.getElementById("paidAmount").innerText = total.toFixed(2);
+    }
+
+      async function updateQR() {
+    const inv = document.getElementById("invoiceNum").innerText.trim();
+    const url = `https://api.qrserver.com/v1/create-qr-code/?data=Invoice%20${encodeURIComponent(inv)}&size=100x100`;
+
+    try {
+      const res = await fetch(url);
+      const blob = await res.blob();
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        document.getElementById("qrImage").src = reader.result;
+      };
+      reader.readAsDataURL(blob);
+    } catch (err) {
+      console.error("QR fetch error:", err);
+    }
+  }
+
+    function downloadPNG() {
+      html2canvas(document.getElementById("invoice"), { scale: 3 }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "invoice.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+    }
+
+    document.getElementById("invoiceNum").addEventListener("input", updateQR);
+    updateQR();
+    updateTotal();
+  </script>
+
+<script>
+  // Disable right-click
+  document.addEventListener("contextmenu", function (e) {
+    e.preventDefault();
+  });
+
+  // Block common developer tools shortcuts
+  document.addEventListener("keydown", function (e) {
+    // F12
+    if (e.key === "F12") {
+      e.preventDefault();
+    }
+
+    // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+S
+    if (
+      (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J")) || 
+      (e.ctrlKey && (e.key === "U" || e.key === "S"))
+    ) {
+      e.preventDefault();
+    }
+
+    // Ctrl+Shift+C (Inspect Element shortcut)
+    if (e.ctrlKey && e.shiftKey && e.key === "C") {
+      e.preventDefault();
+    }
+  });
+</script>
+
+</body>
+</html>
