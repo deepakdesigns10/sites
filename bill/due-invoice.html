@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Invoice - TDT 2025</title>
-  <link rel="manifest" href="manifest.json">
   <style>
     body {
       margin: 0;
@@ -193,7 +192,7 @@ function updateTotal() {
 
   if (due > 0.05) {
     // If due amount is significant
-    sealImage.src = "https://deepakdesigns.thedteam.in/bill/due-stamp.png";
+    sealImage.src = "https://deepakdesigns.thedteam.in/bill/due-stamp1.png";
     sealContainer.style.opacity = 0.8;
     document.getElementById("invoice").style.borderColor = "red";
     document.getElementById("invoice").style.boxShadow = "0 0 5px red";
@@ -274,11 +273,10 @@ Paid via: ${mode}`;
     updateTotal();
     updateQR();
   </script>
-
   <script>
   async function shareInvoice() {
   if (!navigator.share) {
-    alert("Sharing is not supported on this browser.");
+    alert("❌Sharing is not supported on this browser.");
     return;
   }
 
@@ -296,15 +294,14 @@ Paid via: ${mode}`;
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share(shareData);
       } else {
-        alert("Sharing this type of file is not supported on your device.");
+        alert("❌Sharing this type of file is not supported on your device.");
       }
     }, "image/png");
   } catch (error) {
     console.error("Sharing error:", error);
-    alert("Sharing failed: " + error.message);
+    alert("❌Sharing failed: " + error.message);
   }
 }
   </script>
-
 </body>
 </html>
