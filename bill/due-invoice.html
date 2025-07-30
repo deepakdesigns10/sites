@@ -160,7 +160,8 @@
 
   <div class="print-btn">
     <button onclick="window.print()">🖨️ Print</button>
-    <button onclick="downloadPNG()">⬇️ Download PNG</button>
+    <button onclick="shareInvoice()">📤 Share</button>
+    <button onclick="downloadPNG()">⬇️ Download</button>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
@@ -272,5 +273,56 @@ Paid via: ${mode}`;
     updateTotal();
     updateQR();
   </script>
+  <script>
+  async function shareInvoice() {
+    const invoiceEl = document.getElementById("invoice");
+
+    const date = document.getElementById("date").innerText.trim();
+    const inv = document.getElementById("invoiceNum").innerText.trim();
+    const cust = document.getElementById("customerName").innerText.trim();
+    const total = document.getElementById("totalAmount").innerText.trim();
+    const due = document.getElementById("dueAmount").innerText.trim();
+
+    const textData = `Invoice from Deepak Designs
+Invoice #: ${inv}
+Customer: ${cust}
+Total: ₹${total}
+Due: ₹${due}
+Date: ${date}
+`;
+
+    if (!navigator.share) {
+      alert("Your browser does not support sharing.");
+      return;
+    }
+
+    try {
+      const canvas = await html2canvas(invoiceEl, { scale: 3 });
+
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+      const file = new File([blob], 'invoice.png', { type: 'image/png' });
+
+      const shareData = {
+        title: 'Invoice - Deepak Designs',
+        text: 'Invoice attached',
+        files: [file]
+      };
+
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share(shareData);
+      } else {
+        // Fallback to text only
+        await navigator.share({
+          title: 'Invoice - Deepak Designs',
+          text: textData
+        });
+      }
+    } catch (err) {
+      console.error('Share failed:', err);
+      alert("Unable to share this invoice.");
+    }
+  }
+</script>
+
 </body>
 </html>
