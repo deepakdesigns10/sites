@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Invoice - TDT 2025</title>
+  <link rel="manifest" href="manifest.json">
   <style>
     body {
       margin: 0;
@@ -273,56 +274,37 @@ Paid via: ${mode}`;
     updateTotal();
     updateQR();
   </script>
+
   <script>
   async function shareInvoice() {
-    const invoiceEl = document.getElementById("invoice");
+  if (!navigator.share) {
+    alert("Sharing is not supported on this browser.");
+    return;
+  }
 
-    const date = document.getElementById("date").innerText.trim();
-    const inv = document.getElementById("invoiceNum").innerText.trim();
-    const cust = document.getElementById("customerName").innerText.trim();
-    const total = document.getElementById("totalAmount").innerText.trim();
-    const due = document.getElementById("dueAmount").innerText.trim();
-
-    const textData = `Invoice from Deepak Designs
-Invoice #: ${inv}
-Customer: ${cust}
-Total: ₹${total}
-Due: ₹${due}
-Date: ${date}
-`;
-
-    if (!navigator.share) {
-      alert("Your browser does not support sharing.");
-      return;
-    }
-
-    try {
-      const canvas = await html2canvas(invoiceEl, { scale: 3 });
-
-      const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-      const file = new File([blob], 'invoice.png', { type: 'image/png' });
+  try {
+    const canvas = await html2canvas(document.getElementById("invoice"), { scale: 3 });
+    canvas.toBlob(async (blob) => {
+      const file = new File([blob], "invoice.png", { type: "image/png" });
 
       const shareData = {
-        title: 'Invoice - Deepak Designs',
-        text: 'Invoice attached',
-        files: [file]
+        title: "Invoice - Deepak Designs",
+        text: "Sharing invoice from Deepak Designs",
+        files: [file],
       };
 
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share(shareData);
       } else {
-        // Fallback to text only
-        await navigator.share({
-          title: 'Invoice - Deepak Designs',
-          text: textData
-        });
+        alert("Sharing this type of file is not supported on your device.");
       }
-    } catch (err) {
-      console.error('Share failed:', err);
-      alert("Unable to share this invoice.");
-    }
+    }, "image/png");
+  } catch (error) {
+    console.error("Sharing error:", error);
+    alert("Sharing failed: " + error.message);
   }
-</script>
+}
+  </script>
 
 </body>
 </html>
