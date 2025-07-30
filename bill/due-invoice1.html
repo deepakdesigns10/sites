@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Invoice - TDT 2025</title>
+  <link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#000000" />
+<link rel="apple-touch-icon" href="icon-192.png" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: monospace;
+      background: #fff;
+      padding: 10px;
+      user-select: none;
+    }
+
+    .invoice {
+      width: 58mm;
+      max-width: 100%;
+      border: 1px dashed #ccc;
+      padding: 10px;
+      margin: 0 auto;
+      font-size: 12px;
+      line-height: 1.4;
+      background: #fff;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .bold {
+      font-weight: bold;
+    }
+
+    .logo {
+      width: 50px;
+      margin: auto;
+      display: block;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 2px;
+      text-align: left;
+    }
+
+    .total {
+      margin-top: 10px;
+      border-top: 1px dashed #000;
+      padding-top: 5px;
+    }
+
+    .footer {
+      margin-top: 20px;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .print-btn {
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    button {
+      padding: 5px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    .qr {
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .seal {
+      margin-top: 0px;
+      float: right;
+    }
+
+    #sealImage {
+      width: 80px;
+    }
+
+    [contenteditable] {
+      padding: 2px;
+      border-bottom: 1px dashed #aaa;
+      display: inline-block;
+      min-width: 30px;
+    }
+
+    img {
+      pointer-events: none;
+    }
+
+    @media print {
+      .print-btn {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="invoice" class="invoice">
+    <img src="https://deepakdesigns.thedteam.in/assets/images/dd-logo-2025.png" alt="Logo" class="logo" />
+    <div class="center bold">Deepak Designs</div>
+    <div class="center" style="font-size: smaller;">#different by designs!</div>
+    <div class="center" style="font-size: smaller">Chandapura, Bengaluru-560081 KA:29</div>
+    <div class="center" style="font-size: 9px">📞7019043569 📧deepakdesigns10@gmail.com</div>
+    <div class="center" style="font-size: 9px"><b>🔍</b>deepakdesigns.thedteam.in</div>      
+    <hr />
+    <div>Date: <span id="date" style="font-size: smaller;"></span></div>
+    <div>Invoice #: <span id="invoiceNum" contenteditable="true" oninput="updateQR()" style="font-size: smaller;">INV-DD0318072025</span></div>
+    <div>Customer: <span id="customerName" contenteditable="true" oninput="updateQR()" style="font-size: smaller;">Akshith L V</span></div>
+    <div>Address: <span id="customerAddress" contenteditable="true" oninput="updateQR()" style="font-size: smaller;">Bengaluru-560081</span></div>
+    <div>Phone: <span id="customerPhone" contenteditable="true" oninput="updateQR()" style="font-size: smaller;">8296579640</span></div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Qty</th>
+          <th>Price (₹)</th>
+        </tr>
+      </thead>
+      <tbody id="itemRows">
+        <tr>
+          <td><span contenteditable="true" oninput="updateTotal(); updateQR();">Design</span></td>
+          <td><span contenteditable="true" oninput="updateTotal(); updateQR();">1</span></td>
+          <td><span contenteditable="true" oninput="updateTotal(); updateQR();">300</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="total">
+      <div>Subtotal: ₹<span id="subtotalAmount" oninput="updateQR()">0.00</span></div>
+      <div class="seal" id="sealContainer">
+  <img id="sealImage" src="https://deepakdesigns.thedteam.in/bill/paid-stamp.png" alt="Seal" />
+</div>
+
+      <div>Discount: -₹<span id="discount" contenteditable="true" oninput="updateTotal(); updateQR();">50.00</span></div>
+      <div>Total: ₹<span id="totalAmount">0.00</span></div>
+      <div>Paid: ₹<span id="paidAmount" contenteditable="true" oninput="updateTotal(); updateQR();">0.00</span></div>
+<div>Due: ₹<span id="dueAmount">0.00</span></div>
+
+      <div>Mode: <span id="paymentMode" contenteditable="true" oninput="updateQR()">UPI***000</span></div>
+    </div>
+
+    <div class="footer">Thank you for designing with us!</div>
+
+    <div class="qr">
+      <img id="qrImage" src="" alt="QR Code"/>
+    </div>
+  </div>
+
+  <div class="print-btn">
+    <button onclick="window.print()">🖨️ Print</button>
+    <button onclick="shareAsDataURL()">📤 Share</button>
+    <button onclick="downloadPNG()">⬇️ Download</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script>
+    document.getElementById("date").textContent = new Date().toLocaleString();
+
+function updateTotal() {
+  let subtotal = 0;
+  const rows = document.querySelectorAll("#itemRows tr");
+
+  rows.forEach(row => {
+    const qty = parseFloat(row.children[1].innerText) || 0;
+    const price = parseFloat(row.children[2].innerText) || 0;
+    subtotal += qty * price;
+  });
+
+  const discountVal = parseFloat(document.getElementById("discount").innerText) || 0;
+  const paidVal = parseFloat(document.getElementById("paidAmount").innerText) || 0;
+  const total = subtotal - discountVal;
+  const due = total - paidVal;
+
+  document.getElementById("subtotalAmount").innerText = subtotal.toFixed(2);
+  document.getElementById("totalAmount").innerText = total.toFixed(2);
+  document.getElementById("dueAmount").innerText = due.toFixed(2);
+
+  const sealImage = document.getElementById("sealImage");
+  const sealContainer = document.getElementById("sealContainer");
+
+  if (due > 0.05) {
+    // If due amount is significant
+    sealImage.src = "https://deepakdesigns.thedteam.in/bill/due-stamp.png";
+    sealContainer.style.opacity = 0.8;
+    document.getElementById("invoice").style.borderColor = "red";
+    document.getElementById("invoice").style.boxShadow = "0 0 5px red";
+  } else {
+    // Fully paid
+    sealImage.src = "https://deepakdesigns.thedteam.in/bill/paid-stamp.png";
+    sealContainer.style.opacity = 0.6;
+    document.getElementById("invoice").style.borderColor = "#ccc";
+    document.getElementById("invoice").style.boxShadow = "none";
+  }
+}
+
+
+
+    async function updateQR() {
+      const date = document.getElementById("date").innerText.trim();
+      const inv = document.getElementById("invoiceNum").innerText.trim();
+      const cust = document.getElementById("customerName").innerText.trim();
+      const addr = document.getElementById("customerAddress").innerText.trim();
+      const phone = document.getElementById("customerPhone").innerText.trim();
+      const subtotal = document.getElementById("subtotalAmount").innerText.trim();
+      const discount = document.getElementById("discount").innerText.trim();
+      const total = document.getElementById("totalAmount").innerText.trim();
+      const mode = document.getElementById("paymentMode").innerText.trim();
+      const paid = document.getElementById("paidAmount").innerText.trim();
+const due = document.getElementById("dueAmount").innerText.trim();
+
+      
+
+      let itemsData = "";
+      document.querySelectorAll("#itemRows tr").forEach((row, i) => {
+        const item = row.children[0].innerText.trim();
+        const qty = row.children[1].innerText.trim();
+        const price = row.children[2].innerText.trim();
+        itemsData += `Item ${i+1}: ${item}, Qty: ${qty}, Price: ₹${price}`;
+      });
+
+      const qrText = 
+`Date: ${date}
+Invoice #: ${inv}
+Customer: ${cust}
+Address: ${addr}
+Phone: ${phone}
+${itemsData}
+Subtotal: ₹${subtotal}
+Discount: -₹${discount}
+Total: ₹${total}
+Paid: ₹${paid}
+Due: ₹${due}
+Paid via: ${mode}`;
+
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(qrText)}&size=115x115&format=svg`;
+      
+
+      try {
+        const res = await fetch(qrUrl);
+        const blob = await res.blob();
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+          document.getElementById("qrImage").src = reader.result;
+        };
+        reader.readAsDataURL(blob);
+      } catch (err) {
+        console.error("QR fetch error:", err);
+      }
+    }
+
+    function downloadPNG() {
+      html2canvas(document.getElementById("invoice"), { scale: 3 }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "invoice.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+    }
+
+    updateTotal();
+    updateQR();
+  </script>
+<script>
+  async function shareAsDataURL() {
+    const el = document.getElementById("invoice");
+
+    try {
+      const canvas = await html2canvas(el, { scale: 3 });
+      const dataUrl = canvas.toDataURL("image/png");
+
+      // Create a Blob from base64
+      const res = await fetch(dataUrl);
+      const blob = await res.blob();
+      const file = new File([blob], "invoice.png", { type: "image/png" });
+
+      const shareData = {
+        title: "Invoice - Deepak Designs",
+        text: "Sharing invoice from Deepak Designs",
+        files: [file],
+      };
+
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share(shareData);
+      } else {
+        // Fallback for browsers that do not support file sharing
+        const previewWin = window.open();
+        previewWin.document.write(`<img src="${dataUrl}" style="width:100%;"/>`);
+        previewWin.document.title = "Long Press & Share Invoice";
+        alert("⚠️ File sharing not supported — preview opened. Long press the image to share.");
+      }
+
+    } catch (err) {
+      alert("❌ Sharing failed: " + err.message);
+      console.error(err);
+    }
+  }
+</script>
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js")
+      .then(() => console.log("✅ Service Worker Registered"))
+      .catch(err => console.error("❌ Service Worker Error", err));
+  }
+</script>
+
+</body>
+</html>
