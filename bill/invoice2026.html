@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Invoice - TDT 2026</title>
+  <link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#000000" />
+<link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: monospace;
+      background: #fff;
+      padding: 10px;
+      user-select: none;
+    }
+
+    .invoice {
+      width: 58mm;
+      max-width: 100%;
+      min-height: 110mm;
+      display: flex;
+      flex-direction: column;
+      border: 1px dashed #ccc;
+      padding: 10px;
+      margin: 0 auto;
+      font-size: 12px;
+      line-height: 1.4;
+      background: #fff;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .bold {
+      font-weight: bold;
+    }
+
+    .logo {
+      width: 50px;
+      margin: auto;
+      display: block;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 2px;
+      text-align: left;
+    }
+
+    .total {
+      margin-top: 10px;
+      border-top: 1px dashed #000;
+      padding-top: 5px;
+    }
+
+    .footer {
+      margin-top: auto;
+      padding-top: 20px;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .print-btn {
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    button {
+      padding: 5px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    .qr {
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .seal {
+      margin-top: 0px;
+      float: right;
+    }
+
+    #sealImage {
+      width: 80px;
+    }
+
+    [contenteditable] {
+      padding: 2px;
+      border-bottom: 1px dashed #aaa;
+      display: inline-block;
+      min-width: 30px;
+    }
+
+    img {
+      pointer-events: none;
+    }
+
+    @media print {
+      .print-btn, #addItemBtn, .remove-item-btn {
+        display: none !important;
+      }
+    }
+
+    #addItemBtn {
+      padding: 5px;
+      font-size: 12px;
+      cursor: pointer;
+      border: 1px dashed #ccc;
+      background: #f9f9f9;
+      width: 100%;
+      margin-top: 5px;
+      font-family: monospace;
+    }
+    .remove-item-btn {
+      background: none;
+      border: none;
+      color: #ff4d4d;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 0;
+    }
+
+    /* Dark Mode */
+    body.dark-mode {
+      background: #1a1a1a;
+      color: #f1f1f1;
+    }
+    body.dark-mode .invoice {
+      background: #2b2b2b;
+      border-color: #555;
+    }
+    body.dark-mode hr, body.dark-mode .total {
+      border-color: #555;
+    }
+    body.dark-mode [contenteditable] {
+      border-bottom-color: #666;
+    }
+    body.dark-mode button {
+        background: #333;
+        color: #f1f1f1;
+        border: 1px solid #555;
+    }
+    body.dark-mode .remove-item-btn {
+        background: none;
+        border: none;
+        color: #ff7878;
+      }
+    body.dark-mode #addItemBtn {
+        background: #333;
+        color: #f1f1f1;
+        border-color: #555;
+      }
+
+    #qrImage {
+      width: 115px;
+      height: 115px;
+    }
+  </style>
+</head>
+<body>
+  <div id="invoice" class="invoice">
+    <img src="https://deepakdesigns.thedteam.in/assets/images/dd-logo-2025.png" alt="Logo" class="logo" crossorigin="anonymous" />
+    <div class="center bold">Deepak Designs</div>
+    <div class="center" style="font-size: smaller;">#different by designs!</div>
+    <div class="center" style="font-size: smaller">Chandapura, Bengaluru-560081 KA:29</div>
+    <div class="center" style="font-size: 9px">📞7019043569 📧deepakdesigns10@gmail.com</div>
+    <div class="center" style="font-size: 9px"><b>🔍</b>deepakdesigns.thedteam.in</div>      
+    <hr />
+    <div>Date: <span id="date" style="font-size: smaller;"></span></div>
+    <div>Invoice #: <span id="invoiceNum" contenteditable="true" style="font-size: smaller;"></span></div>
+    <div>Customer: <span id="customerName" contenteditable="true" style="font-size: smaller;">Akshith L V</span></div>
+    <div>Address: <span id="customerAddress" contenteditable="true" style="font-size: smaller;">Bengaluru-560081</span></div>
+    <div>Phone: <span id="customerPhone" contenteditable="true" style="font-size: smaller;">8296579640</span></div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Qty</th>
+          <th>Price (₹)</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="itemRows">
+        <!-- Items will be dynamically inserted here -->
+      </tbody>
+    </table>
+    <button id="addItemBtn" data-html2canvas-ignore="true">+ Add Item</button>
+
+    <div class="total">
+      <div>Subtotal: ₹<span id="subtotalAmount">0.00</span></div>
+      <div class="seal" id="sealContainer">
+  <img id="sealImage" src="https://deepakdesigns.thedteam.in/bill/paid-stamp.png" alt="Seal" crossorigin="anonymous" />
+</div>
+
+      <div>Discount: -₹<span id="discount" contenteditable="true">50.00</span></div>
+      <div>Total: ₹<span id="totalAmount">0.00</span></div>
+      <div>Paid: ₹<span id="paidAmount" contenteditable="true">0.00</span></div>
+<div>Due: ₹<span id="dueAmount">0.00</span></div>
+
+      <div>Mode: <span id="paymentMode" contenteditable="true">UPI***000</span></div>
+    </div>
+
+    <div class="footer">Thank you for designing with us!</div>
+
+    <div class="qr">
+      <img id="qrImage" src="" alt="QR Code"/>
+      <div id="qrHelpText" style="font-size: 10px; margin-top: 5px; display: none;">Scan to pay with any UPI app</div>
+    </div>
+  </div>
+
+  <div class="print-btn">
+    <button onclick="window.print()">🖨️ Print</button>
+    <button id="shareBtn" onclick="shareAsDataURL()">📤 Share</button>
+    <button onclick="downloadPNG()">⬇️ Download</button>
+    <button id="darkModeToggle">🌙</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const $ = (selector) => document.querySelector(selector);
+      const $$ = (selector) => document.querySelectorAll(selector);
+
+      function generateInvoiceNum() {
+        const now = new Date();
+        const yyyy = now.getFullYear();
+        const mm = String(now.getMonth() + 1).padStart(2, '0');
+        const dd = String(now.getDate()).padStart(2, '0');
+        const hh = String(now.getHours()).padStart(2, '0');
+        const min = String(now.getMinutes()).padStart(2, '0');
+        const ss = String(now.getSeconds()).padStart(2, '0');
+        return `DDINV-${yyyy}${mm}${dd}-${hh}${min}${ss}`;
+      }
+
+      // --- CORE FUNCTIONS ---
+
+      async function updateQR() {
+      const date = document.getElementById("date").innerText.trim();
+      const inv = document.getElementById("invoiceNum").innerText.trim();
+      const cust = document.getElementById("customerName").innerText.trim();
+      const addr = document.getElementById("customerAddress").innerText.trim();
+      const phone = document.getElementById("customerPhone").innerText.trim();
+      const subtotal = document.getElementById("subtotalAmount").innerText.trim();
+      const discount = document.getElementById("discount").innerText.trim();
+      const total = document.getElementById("totalAmount").innerText.trim();
+      const mode = document.getElementById("paymentMode").innerText.trim();
+      const paid = document.getElementById("paidAmount").innerText.trim();
+      const due = document.getElementById("dueAmount").innerText.trim();
+
+      let itemsData = "";
+      document.querySelectorAll("#itemRows tr").forEach((row, i) => {
+        const item = row.children[0].innerText.trim();
+        const qty = row.children[1].innerText.trim();
+        const price = row.children[2].innerText.trim();
+        itemsData += `Item ${i+1}: ${item}, Qty: ${qty}, Price: ₹${price}\n`;
+      });
+
+      const qrText = 
+`Deepak Designs
+📞 7019043569
+------------------------
+Date: ${date}
+Invoice #: ${inv}
+Customer: ${cust}
+Address: ${addr}
+Phone: ${phone}
+${itemsData}
+Subtotal: ₹${subtotal}
+Discount: -₹${discount}
+Total: ₹${total}
+Paid: ₹${paid}
+Due: ₹${due}
+Paid via: ${mode}`;
+
+      const dueAmount = parseFloat(due) || 0;
+      let finalQrData = qrText;
+      const qrHelpText = document.getElementById("qrHelpText");
+
+      if (dueAmount > 0) {
+        const upiId = "7019043569-1@okbizaxis"; // Replace with your actual UPI ID
+        const payeeName = "Deepak Designs";
+        finalQrData = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${dueAmount.toFixed(2)}&cu=INR&tn=${encodeURIComponent(inv)}`;
+        if (qrHelpText) qrHelpText.style.display = "block";
+      } else {
+        if (qrHelpText) qrHelpText.style.display = "none";
+      }
+
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(finalQrData)}&size=600x600&format=png&ecc=H`; // Generate larger image for better scanning
+      const logoUrl = 'https://deepakdesigns.thedteam.in/assets/images/dd-logo-2025.png';
+
+      try {
+        const finalQrDataUrl = await createQrWithLogo(qrUrl, logoUrl);
+        $('#qrImage').src = finalQrDataUrl;
+      } catch (err) {
+        console.error("QR creation error:", err);
+        // Fallback to QR without logo if something fails
+        $('#qrImage').src = qrUrl.replace('format=png', 'format=svg');
+      }
+    }
+
+      async function createQrWithLogo(qrUrl, logoUrl) {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const qrSize = 600; // Higher resolution for text-dense QR codes
+        canvas.width = qrSize;
+        canvas.height = qrSize;
+
+        const loadImage = (src) => {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.crossOrigin = 'Anonymous';
+                img.onload = () => resolve(img);
+                img.onerror = (err) => reject(err);
+                img.src = src;
+            });
+        };
+
+        try {
+            const [qrImg, logoImg] = await Promise.all([
+                loadImage(qrUrl),
+                loadImage(logoUrl)
+            ]);
+
+            // Draw QR code
+            ctx.drawImage(qrImg, 0, 0, qrSize, qrSize);
+
+            // Calculate logo dimensions and position
+            const logoSize = qrSize * 0.25; // 25% of QR size (reduced for better scannability)
+            const logoX = (qrSize - logoSize) / 2;
+            const logoY = (qrSize - logoSize) / 2;
+            const padding = 12; // White padding around logo scaled for 600px
+
+            // Draw white background for the logo to ensure scannability
+            ctx.fillStyle = '#FFF';
+            ctx.fillRect(logoX - padding, logoY - padding, logoSize + (padding * 2), logoSize + (padding * 2));
+
+            // Draw logo
+            ctx.drawImage(logoImg, logoX, logoY, logoSize, logoSize);
+
+            return canvas.toDataURL('image/png');
+        } catch (error) {
+            console.error("Error loading images for QR code", error);
+            throw error; // re-throw to be caught by the caller
+        }
+    }
+      function updateTotal() {
+        let subtotal = 0;
+        $$("#itemRows tr").forEach(row => {
+          const qty = parseFloat(row.children[1].innerText) || 0;
+          const price = parseFloat(row.children[2].innerText) || 0;
+          subtotal += qty * price;
+        });
+
+        const discountVal = parseFloat($("#discount").innerText) || 0;
+        const paidVal = parseFloat($("#paidAmount").innerText) || 0;
+        const total = subtotal - discountVal;
+        const due = total - paidVal;
+
+        $("#subtotalAmount").innerText = subtotal.toFixed(2);
+        $("#totalAmount").innerText = total.toFixed(2);
+        $("#dueAmount").innerText = due.toFixed(2);
+
+        const sealImage = $("#sealImage");
+        const sealContainer = $("#sealContainer");
+        const invoiceEl = $("#invoice");
+
+        if (due > 0.05) {
+          sealImage.src = "https://deepakdesigns.thedteam.in/bill/due-stamp.png";
+          sealContainer.style.opacity = 0.8;
+          invoiceEl.style.borderColor = "red";
+          invoiceEl.style.boxShadow = "0 0 5px red";
+        } else {
+          sealImage.src = "https://deepakdesigns.thedteam.in/bill/paid-stamp.png";
+          sealContainer.style.opacity = 0.6;
+          invoiceEl.style.borderColor = "";
+          invoiceEl.style.boxShadow = "none";
+        }
+      }
+
+      // --- STATE MANAGEMENT ---
+      function saveState() {
+        const items = [];
+        $$('#itemRows tr').forEach(row => {
+          items.push({
+            name: row.children[0].innerText,
+            qty: row.children[1].innerText,
+            price: row.children[2].innerText,
+          });
+        });
+        const state = {
+          invoiceNum: $('#invoiceNum').innerText,
+          customerName: $('#customerName').innerText,
+          customerAddress: $('#customerAddress').innerText,
+          customerPhone: $('#customerPhone').innerText,
+          discount: $('#discount').innerText,
+          paidAmount: $('#paidAmount').innerText,
+          paymentMode: $('#paymentMode').innerText,
+          items: items,
+        };
+        localStorage.setItem('invoiceState', JSON.stringify(state));
+      }
+
+      function loadState() {
+        const state = JSON.parse(localStorage.getItem('invoiceState'));
+        if (!state) {
+          $('#invoiceNum').innerText = generateInvoiceNum();
+          addItemRow('Design', '1', '300'); // Add a default row
+          updateAndSave();
+          return;
+        }
+        $('#invoiceNum').innerText = generateInvoiceNum(); // Generate a new one on every refresh
+        $('#customerName').innerText = state.customerName || '';
+        $('#customerAddress').innerText = state.customerAddress || '';
+        $('#customerPhone').innerText = state.customerPhone || '';
+        $('#discount').innerText = state.discount || '0.00';
+        $('#paidAmount').innerText = state.paidAmount || '0.00';
+        $('#paymentMode').innerText = state.paymentMode || '';
+
+        $('#itemRows').innerHTML = '';
+        if (state.items && state.items.length > 0) {
+          state.items.forEach(item => addItemRow(item.name, item.qty, item.price));
+        } else {
+          addItemRow('Design', '1', '300');
+        }
+        updateAndSave();
+      }
+
+      // --- DYNAMIC TABLE ---
+      function addItemRow(name = 'New Item', qty = '1', price = '0.00') {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td><span contenteditable="true">${name}</span></td>
+          <td><span contenteditable="true">${qty}</span></td>
+          <td><span contenteditable="true">${price}</span></td>
+          <td style="text-align:center;"><button class="remove-item-btn" data-html2canvas-ignore="true">✖</button></td>
+        `;
+        $('#itemRows').appendChild(row);
+      }
+
+      // --- UI & THEME ---
+      function applyDarkMode(isDark) {
+        document.body.classList.toggle('dark-mode', isDark);
+        $('#darkModeToggle').textContent = isDark ? '☀️' : '🌙';
+        localStorage.setItem('darkMode', isDark);
+      }
+
+      // --- EVENT HANDLERS & HELPERS ---
+      window.downloadPNG = () => {
+        html2canvas($("#invoice"), { scale: 3, useCORS: true }).then(canvas => {
+          const link = document.createElement("a");
+          link.download = `invoice-${$('#invoiceNum').innerText.trim()}.png`;
+          link.href = canvas.toDataURL("image/png");
+          link.click();
+        });
+      };
+
+      window.shareAsDataURL = async () => {
+        const shareBtn = $('#shareBtn');
+        const originalText = shareBtn.innerText;
+        shareBtn.innerText = "⏳ Wait...";
+        let generatedCanvas = null;
+
+        if (!navigator.share) {
+          alert("❌ Sharing is not supported on this browser.");
+          shareBtn.innerText = originalText;
+          return;
+        }
+
+        try {
+          // Lower scale slightly for faster rendering to prevent gesture timeout
+          generatedCanvas = await html2canvas($("#invoice"), { scale: 2, useCORS: true }); 
+          const blob = await new Promise(resolve => generatedCanvas.toBlob(resolve, "image/png"));
+          if (!blob) throw new Error("Could not generate image.");
+          
+          const file = new File([blob], `invoice-${$('#invoiceNum').innerText.trim()}.png`, { type: "image/png" });
+
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({
+              title: "Invoice - Deepak Designs",
+              text: `Invoice ${$('#invoiceNum').innerText.trim()} from Deepak Designs`,
+              files: [file],
+            });
+          } else {
+            alert("⚠️ File sharing not supported natively. Try downloading the invoice instead.");
+          }
+        } catch (err) {
+          if (err.name !== 'AbortError') {
+            alert("❌ Sharing failed: " + err.message);
+            console.error(err);
+          }
+        } finally {
+          shareBtn.innerText = originalText;
+        }
+      };
+
+      function updateAndSave() {
+        updateTotal();
+        updateQR();
+        saveState();
+      }
+
+      // --- INITIALIZATION ---
+      function init() {
+        $('#date').textContent = new Date().toLocaleString();
+
+        $('#invoice').addEventListener('input', (e) => {
+          if (e.target.hasAttribute('contenteditable')) updateAndSave();
+        });
+
+        $('#addItemBtn').addEventListener('click', () => {
+          addItemRow();
+          updateAndSave();
+        });
+
+        $('#itemRows').addEventListener('click', (e) => {
+          if (e.target.classList.contains('remove-item-btn')) {
+            e.target.closest('tr').remove();
+            updateAndSave();
+          }
+        });
+
+        $('#darkModeToggle').addEventListener('click', () => applyDarkMode(!document.body.classList.contains('dark-mode')));
+
+        applyDarkMode(localStorage.getItem('darkMode') === 'true');
+        loadState();
+
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.register("service-worker.js")
+            .then(() => console.log("✅ Service Worker Registered"))
+            .catch(err => console.error("❌ Service Worker Error", err));
+        }
+      }
+
+      init();
+    });
+  </script>
+
+</body>
+</html>
