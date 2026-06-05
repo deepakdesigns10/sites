@@ -86,7 +86,7 @@
             <div class="modal-container">
                 <button class="modal-close" id="centralCloseBtn">&times;</button>
                 <a href="https://www.thedteam.in" target="_blank">
-                    <img class="modal-image" src="https://lh3.googleusercontent.com/geougc/AF1QipMFDipAek-xqk8vUugWiO4SqTr0TwOP7qoepqJ7=h305-no" alt="Special Offer" draggable="false">
+                    <img class="modal-image" src="https://scontent.fblr4-1.fna.fbcdn.net/v/t39.30808-6/715990321_903436879403389_6941113661741572620_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_ohc=f3tiylqQpeIQ7kNvwEoVsF5&_nc_oc=AdrMq_QZynfT0VKgUAcpcaWzRTpbDQVQt5WHPzHg5XEVXQL6ZZJgbzDa8hGA7UCY7YKGXwE6xczUEzh2zRQcT31n&_nc_zt=23&_nc_ht=scontent.fblr4-1.fna&_nc_gid=DetMYekbB91ZPBWVrcgAQw&_nc_ss=7b2a8&oh=00_Af_COxCfYsLTZsza__pAGKZjfjrDXxyDz1LdC5FcRsQ0gA&oe=6A28518B" alt="Special Offer" draggable="false">
                 </a>
             </div>
         </div>
