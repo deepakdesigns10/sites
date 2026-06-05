@@ -128,11 +128,11 @@
     // Make the popup appear automatically 3 seconds after the page loads
     setTimeout(() => {
         modalOverlay.classList.add('active');
-    }, 5000);
+    }, 10000);
 
     // Automatically close the modal after 8 seconds (8000ms)
     autoDismissTimeout = setTimeout(() => {
     closeModal();
-    }, 8000);
+    }, 12000);
 
 })();
