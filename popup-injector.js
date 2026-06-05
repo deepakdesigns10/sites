@@ -9,14 +9,7 @@
     // 1. Inject the exact same CSS
     const style = document.createElement('style');
     style.innerHTML = `
-        :root {
-            --primary-color: #4F46E5;
-            --text-main: #1F2937;
-            --text-muted: #6B7280;
-            --bg-color: #ffffff;
-        }
-
-        .modal-overlay {
+        .dd-modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -33,8 +26,8 @@
             transition: opacity 0.3s ease, visibility 0.3s ease;
         }
 
-        .modal-container {
-            background: var(--bg-color);
+        .dd-modal-container {
+            background: #ffffff;
             width: 90%;
             max-width: 450px;
             border-radius: 20px;
@@ -45,16 +38,16 @@
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .modal-overlay.active {
+        .dd-modal-overlay.active {
             opacity: 1;
             visibility: visible;
         }
 
-        .modal-overlay.active .modal-container {
+        .dd-modal-overlay.active .dd-modal-container {
             transform: scale(1) translateY(0);
         }
 
-        .modal-close {
+        .dd-modal-close {
             position: absolute;
             top: 15px;
             right: 15px;
@@ -73,11 +66,11 @@
             z-index: 10;
         }
 
-        .modal-close:hover {
+        .dd-modal-close:hover {
             background: #f3f4f6;
         }
 
-        .modal-image {
+        .dd-modal-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -89,11 +82,11 @@
 
     // 2. Inject the exact same HTML structure
     const modalHTML = `
-        <div class="modal-overlay" id="centralizedModalOverlay">
-            <div class="modal-container">
-                <button class="modal-close" id="centralCloseBtn">&times;</button>
+        <div class="dd-modal-overlay" id="centralizedModalOverlay">
+            <div class="dd-modal-container">
+                <button class="dd-modal-close" id="centralCloseBtn">&times;</button>
                 <a href="https://www.thedteam.in" target="_blank">
-                    <img class="modal-image" src="https://scontent.fblr4-1.fna.fbcdn.net/v/t39.30808-6/715990321_903436879403389_6941113661741572620_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_ohc=f3tiylqQpeIQ7kNvwEoVsF5&_nc_oc=AdrMq_QZynfT0VKgUAcpcaWzRTpbDQVQt5WHPzHg5XEVXQL6ZZJgbzDa8hGA7UCY7YKGXwE6xczUEzh2zRQcT31n&_nc_zt=23&_nc_ht=scontent.fblr4-1.fna&_nc_gid=DetMYekbB91ZPBWVrcgAQw&_nc_ss=7b2a8&oh=00_Af_COxCfYsLTZsza__pAGKZjfjrDXxyDz1LdC5FcRsQ0gA&oe=6A28518B" alt="Special Offer" draggable="false">
+                    <img class="dd-modal-image" src="https://scontent.fblr4-1.fna.fbcdn.net/v/t39.30808-6/715990321_903436879403389_6941113661741572620_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_ohc=f3tiylqQpeIQ7kNvwEoVsF5&_nc_oc=AdrMq_QZynfT0VKgUAcpcaWzRTpbDQVQt5WHPzHg5XEVXQL6ZZJgbzDa8hGA7UCY7YKGXwE6xczUEzh2zRQcT31n&_nc_zt=23&_nc_ht=scontent.fblr4-1.fna&_nc_gid=DetMYekbB91ZPBWVrcgAQw&_nc_ss=7b2a8&oh=00_Af_COxCfYsLTZsza__pAGKZjfjrDXxyDz1LdC5FcRsQ0gA&oe=6A28518B" alt="Special Offer" draggable="false">
                 </a>
             </div>
         </div>
