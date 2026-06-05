@@ -1,23 +1,283 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <link rel=" shortcut icon" href="SDG/SDG Wheel.png" sizes="16x16">
-  <title>SDG | SUSTAINABLE DEVELOPMENT GOALS </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="SDG/SDG Wheel.png" sizes="16x16">
+  <title>SDG | SUSTAINABLE DEVELOPMENT GOALS</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-<link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./style.css">
+  <style>
+    body {
+      background-color: #ffffff;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      -webkit-user-select: none; /* Safari */
+      -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* IE10+/Edge */
+      user-select: none; /* Standard */
+    }
+    img {
+      -webkit-user-drag: none;
+      -khtml-user-drag: none;
+      -moz-user-drag: none;
+      -o-user-drag: none;
+      user-drag: none;
+    }
+    /* SDG Navigation Redesign */
+    .navigation {
+      background: #ffffff !important;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .navigation::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(to right,
+        #E5243B 0%, #E5243B 5.88%,
+        #DDA63A 5.88%, #DDA63A 11.76%,
+        #4C9F38 11.76%, #4C9F38 17.64%,
+        #C5192D 17.64%, #C5192D 23.52%,
+        #FF3A21 23.52%, #FF3A21 29.40%,
+        #26BDE2 29.40%, #26BDE2 35.28%,
+        #FCC30B 35.28%, #FCC30B 41.16%,
+        #A21942 41.16%, #A21942 47.04%,
+        #FD6925 47.04%, #FD6925 52.92%,
+        #DD1367 52.92%, #DD1367 58.80%,
+        #FD9D24 58.80%, #FD9D24 64.68%,
+        #BF8B2E 64.68%, #BF8B2E 70.56%,
+        #3F7E44 70.56%, #3F7E44 76.44%,
+        #0A97D9 76.44%, #0A97D9 82.32%,
+        #56C02B 82.32%, #56C02B 88.20%,
+        #00689D 88.20%, #00689D 94.08%,
+        #19486A 94.08%, #19486A 100%
+      );
+    }
+    .brand a, .brand a:visited {
+      color: #333333 !important;
+      font-weight: 500;
+    }
+    .brand img {
+      animation: spin 10s linear infinite;
+    }
+    nav ul li a, nav ul li a:visited {
+      color: #333333 !important;
+      background: transparent !important;
+      font-weight: 500;
+    }
+    nav ul li a:hover, nav ul li a:visited:hover {
+      color: #0A97D9 !important; /* SDG Goal 14 Blue for hover state */
+    }
+    .nav-mobile {
+      background: transparent !important;
+    }
+    #nav-toggle span, #nav-toggle span:before, #nav-toggle span:after {
+      background: #333333 !important;
+    }
+    #nav-toggle.active span {
+      background-color: transparent !important;
+    }
+    .sdg-header {
+      text-align: center;
+      padding: 0px 0 0 0;
+    }
+    .sdg-header img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .sdg-header .sdg-gif {
+      max-width: 100%;
+      height: 650px;
+    }
+    .sdg-header .sdg-logo {
+      max-height: 180px;
+      margin-top: 20px;
+    }
+    @media only screen and (max-width: 798px) {
+      nav ul {
+        background: #ffffff;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        text-align: center;
+      }
+      .sdg-header .sdg-gif {
+        height: auto;
+      }
+      .brand a {
+        margin-left: 0 !important;
+        font-size: 1.1rem !important;
+      }
+      .nav-list {
+        margin-right: 0 !important;
+      }
+    }
+    .main-title {
+      font-size: 2.5rem;
+      color: #333;
+      margin-top: 30px;
+      margin-bottom: 50px;
+      letter-spacing: 1px;
+      padding: 0 20px;
+    }
+    .sdg-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto 60px;
+      padding: 0 20px;
+    }
+    @media only screen and (max-width: 798px) {
+      .sdg-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        padding: 0 10px;
+      }
+    }
+    .sdg-grid .container {
+      width: 100%;
+      margin: 0;
+      position: relative;
+    }
+    .content-image {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+    .content:hover .content-image {
+      transform: scale(1.05);
+    }
+    /* Page Loader */
+    .loader-bg {
+      position: fixed;
+      z-index: 999999;
+      background: #ffffff;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .loader-spin {
+      width: 80px;
+      height: 80px;
+      animation: spin 1.5s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    /* Footer */
+    footer {
+      background-color: #19486A; /* Dark blue from SDG 17 */
+      color: #ffffff;
+      text-align: center;
+      padding: 25px 20px;
+      position: relative;
+      margin-top: 60px;
+    }
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(to right,
+        #E5243B 0%, #E5243B 5.88%,
+        #DDA63A 5.88%, #DDA63A 11.76%,
+        #4C9F38 11.76%, #4C9F38 17.64%,
+        #C5192D 17.64%, #C5192D 23.52%,
+        #FF3A21 23.52%, #FF3A21 29.40%,
+        #26BDE2 29.40%, #26BDE2 35.28%,
+        #FCC30B 35.28%, #FCC30B 41.16%,
+        #A21942 41.16%, #A21942 47.04%,
+        #FD6925 47.04%, #FD6925 52.92%,
+        #DD1367 52.92%, #DD1367 58.80%,
+        #FD9D24 58.80%, #FD9D24 64.68%,
+        #BF8B2E 64.68%, #BF8B2E 70.56%,
+        #3F7E44 70.56%, #3F7E44 76.44%,
+        #0A97D9 76.44%, #0A97D9 82.32%,
+        #56C02B 82.32%, #56C02B 88.20%,
+        #00689D 88.20%, #00689D 94.08%,
+        #19486A 94.08%, #19486A 100%
+      );
+    }
+    .footer-content p {
+      margin: 0;
+      font-size: 0.9rem;
+    }
+    .footer-content a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    .footer-content a:hover {
+        text-decoration: underline;
+    }
 
+    /* Back to top button */
+    #back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      display: none;
+      width: 50px;
+      height: 50px;
+      background-color: #0A97D9; /* Blue from SDG 14 */
+      color: white;
+      text-align: center;
+      line-height: 50px;
+      border-radius: 50%;
+      text-decoration: none;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: background-color 0.3s, transform 0.3s;
+      z-index: 1000;
+    }
+    #back-to-top:hover {
+      background-color: #00689D; /* Darker blue from SDG 16 */
+      transform: translateY(-5px);
+    }
+    #back-to-top::after {
+      content: '';
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border-top: 3px solid white;
+      border-left: 3px solid white;
+      transform: rotate(45deg);
+      position: relative;
+      top: 3px;
+    }
+  </style>
 </head>
 <body>
-<!-- partial:index.partial.html -->
+
+<div class="loader-bg">
+  <img src="SDG/SDG Wheel.png" alt="Loading..." class="loader-spin">
+</div>
+
 <section class="navigation">
   <div class="nav-container">
     <div class="brand">
-      <a href="https://deepakdesigns.thedteam.in/" target="_blank">Deepak Designs</a>
+      <a href="https://deepakdesigns.thedteam.in/" target="_blank" style="display: flex; align-items: center; height: 70px; gap: 10px; margin-left: -90px;">
+        <img src="SDG/SDG Wheel.png" alt="SDG Logo" style="height: 35px; width: auto;">
+        SDG | Deepak Designs
+      </a>
     </div>
     <nav>
       <div class="nav-mobile"><a id="nav-toggle" href="#!"><span></span></a></div>
-      <ul class="nav-list">
+      <ul class="nav-list" style="margin-right: -90px;">
         <li>
           <a href="https://deepakdesigns.thedteam.in/">Home</a>
         </li>
@@ -26,322 +286,320 @@
         </li>
         <li>
           <a href="https://deepakdesigns.thedteam.in/deepakdesigns.html#services3-t">Services</a>
-          <!--ul class="nav-dropdown">
-            <li>
-              <a href="#!">Web Design</a>
-            </li>
-            <li>
-              <a href="#!">Web Development</a>
-            </li>
-            <li>
-              <a href="#!">Graphic Design</a>
-            </li>
-          </ul>
         </li>
-        <li>
-          <a href="#!">Pricing</a>
-        </li>
-        <li>
-          <a href="#!">Portfolio</a>
-          <ul class="nav-dropdown">
-            <li>
-              <a href="#">Web Design</a>
-            </li>
-            <li>
-              <a href="#">Web Development</a>
-            </li>
-            <li>
-              <a href="#">Graphic Design</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <a href="#!">Contact</a>
-        </li-->
       </ul>
     </nav>
   </div>
 </section>
-<!-- partial -->
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script><script  src="./script.js"></script>
 
-</body>
-</html>
-
-
-
-<!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-
-  <link rel="stylesheet" href="./style.css">
-
-</head>
-<body>
-
+<div class="sdg-header">
   <a href="https://www.globalgoals.org/" target="_blank">
-    <img class="content-image" src="SDG/sdg_gif1.gif" width="100" height="660"></a>
+    <img class="sdg-gif" src="SDG/sdg_gif1.gif" alt="SDG Animation">
+  </a>
+  <br>
+  <!--a href="https://sdgs.un.org/" target="_blank">
+    <img class="sdg-logo" src="SDG/E_SDG_logo.jpg" alt="SDG Logo">
+  </a-->
+  <h1 class="main-title">SUSTAINABLE DEVELOPMENT GOALS</h1>
+</div>
 
-<!-- partial:index.partial.html -->
-<a href="https://sdgs.un.org/" target="_blank">
-<img class="content-image" src="SDG/E_SDG_logo.jpg" width="100" height="750p"></a>
-<h1 class="main-title">SUSTAINABLE DEVELOPMENT GOALS</h1>
+<div class="sdg-grid">
+  <div class="container">
+    <div class="content">
+      <a href="https://www.globalgoals.org/1-no-poverty" target="_blank">
+        <div class="content-overlay"></div>
+        <img class="content-image" src="SDG/E-WEB-Goal-01.png" alt="Goal 1: No Poverty">
+        <div class="content-details fadeIn-bottom">
+          <h3 class="content-title"></h3>
+          <p class="content-text"></p>
+        </div>
+      </a>
+    </div>
+  </div>
 
+  <div class="container">
+    <div class="content">
+      <a href="https://www.globalgoals.org/2-zero-hunger" target="_blank">
+        <div class="content-overlay"></div>
+        <img class="content-image" src="SDG/E-WEB-Goal-02.png" alt="Goal 2: Zero Hunger">
+        <div class="content-details fadeIn-top">
+          <h3></h3>
+          <p></p>
+        </div>
+      </a>
+    </div>
+  </div>
 
-<div class="container">
-  <h3 class="title"></h3>
-  <div class="content">
-    <a href="https://www.globalgoals.org/1-no-poverty" target="_blank">
-      <div class="content-overlay"></div>
-      <img class="content-image" src="SDG/E-WEB-Goal-01.png">
-      <div class="content-details fadeIn-bottom">
-        <h3 class="content-title"> </h3>
-        <p class="content-text">  </p>
-      </div>
-    </a>
+  <div class="container">
+    <div class="content">
+      <a href="https://www.globalgoals.org/3-good-health-and-well-being" target="_blank">
+        <div class="content-overlay"></div>
+        <img class="content-image" src="SDG/E-WEB-Goal-03.png" alt="Goal 3: Good Health and Well-being">
+        <div class="content-details fadeIn-left">
+          <h3></h3>
+          <p></p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="content">
+      <a href="https://www.globalgoals.org/4-quality-education" target="_blank">
+        <div class="content-overlay"></div>
+        <img class="content-image" src="SDG/E-WEB-Goal-04.png" alt="Goal 4: Quality Education">
+        <div class="content-details fadeIn-right">
+          <h3></h3>
+          <p></p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="content">
+      <a href="https://www.globalgoals.org/5-gender-equality" target="_blank">
+        <div class="content-overlay"></div>
+        <img class="content-image" src="SDG/E-WEB-Goal-05.png" alt="Goal 5: Gender Equality">
+        <div class="content-details fadeIn-top fadeIn-left">
+          <h3></h3>
+          <p></p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="content">
+      <a href="https://www.globalgoals.org/6-clean-water-and-sanitation" target="_blank">
+        <div class="content-overlay"></div>
+        <img class="content-image" src="SDG/E-WEB-Goal-06.png" alt="Goal 6: Clean Water and Sanitation">
+        <div class="content-details fadeIn-top fadeIn-right">
+          <h3></h3>
+          <p></p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="content">
+      <a href="https://www.globalgoals.org/7-affordable-and-clean-energy" target="_blank">
+        <div class="content-overlay"></div>
+        <img class="content-image" src="SDG/E-WEB-Goal-07.png" alt="Goal 7: Affordable and Clean Energy">
+        <div class="content-details fadeIn-bottom fadeIn-left">
+          <h3></h3>
+          <p></p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="content">
+      <a href="https://www.globalgoals.org/8-decent-work-and-economic-growth" target="_blank">
+        <div class="content-overlay"></div>
+        <img class="content-image" src="SDG/E-WEB-Goal-08.png" alt="Goal 8: Decent Work and Economic Growth">
+        <div class="content-details fadeIn-bottom fadeIn-right">
+          <h3></h3>
+          <p></p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="content">
+      <a href="https://www.globalgoals.org/9-industry-innovation-and-infrastructure" target="_blank">
+        <div class="content-overlay"></div>
+        <img class="content-image" src="SDG/E-WEB-Goal-09.png" alt="Goal 9: Industry, Innovation and Infrastructure">
+        <div class="content-details fadeIn-bottom">
+          <h3 class="content-title"></h3>
+          <p class="content-text"></p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="content">
+      <a href="https://www.globalgoals.org/10-reduced-inequalities" target="_blank">
+        <div class="content-overlay"></div>
+        <img class="content-image" src="SDG/E-WEB-Goal-10.png" alt="Goal 10: Reduced Inequalities">
+        <div class="content-details fadeIn-top">
+          <h3></h3>
+          <p></p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="content">
+      <a href="https://www.globalgoals.org/11-sustainable-cities-and-communities" target="_blank">
+        <div class="content-overlay"></div>
+        <img class="content-image" src="SDG/E-WEB-Goal-11.png" alt="Goal 11: Sustainable Cities and Communities">
+        <div class="content-details fadeIn-left">
+          <h3></h3>
+          <p></p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="content">
+      <a href="https://www.globalgoals.org/12-responsible-consumption-and-production" target="_blank">
+        <div class="content-overlay"></div>
+        <img class="content-image" src="SDG/E-WEB-Goal-12.png" alt="Goal 12: Responsible Consumption and Production">
+        <div class="content-details fadeIn-right">
+          <h3></h3>
+          <p></p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="content">
+      <a href="https://www.globalgoals.org/13-climate-action" target="_blank">
+        <div class="content-overlay"></div>
+        <img class="content-image" src="SDG/E-WEB-Goal-13.png" alt="Goal 13: Climate Action">
+        <div class="content-details fadeIn-top fadeIn-left">
+          <h3></h3>
+          <p></p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="content">
+      <a href="https://www.globalgoals.org/14-life-below-water" target="_blank">
+        <div class="content-overlay"></div>
+        <img class="content-image" src="SDG/E-WEB-Goal-14.png" alt="Goal 14: Life Below Water">
+        <div class="content-details fadeIn-top fadeIn-right">
+          <h3></h3>
+          <p></p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="content">
+      <a href="https://www.globalgoals.org/15-life-on-land" target="_blank">
+        <div class="content-overlay"></div>
+        <img class="content-image" src="SDG/E-WEB-Goal-15.png" alt="Goal 15: Life on Land">
+        <div class="content-details fadeIn-bottom fadeIn-left">
+          <h3></h3>
+          <p></p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="content">
+      <a href="https://www.globalgoals.org/16-peace-justice-and-strong-institutions" target="_blank">
+        <div class="content-overlay"></div>
+        <img class="content-image" src="SDG/E-WEB-Goal-16.png" alt="Goal 16: Peace, Justice and Strong Institutions">
+        <div class="content-details fadeIn-bottom fadeIn-right">
+          <h3></h3>
+          <p></p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="content">
+      <a href="https://www.globalgoals.org/17-partnerships-for-the-goals" target="_blank">
+        <div class="content-overlay"></div>
+        <img class="content-image" src="SDG/E-WEB-Goal-17.png" alt="Goal 17: Partnerships for the Goals">
+        <div class="content-details fadeIn-bottom fadeIn-right">
+          <h3></h3>
+          <p></p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="content">
+      <a href="https://sdgs.un.org/" target="_blank">
+        <div class="content-overlay"></div>
+        <img class="content-image" src="SDG/globalgoals.png" alt="Global Goals">
+        <div class="content-details fadeIn-bottom fadeIn-right">
+          <h3></h3>
+          <p></p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="content">
+      <a href="https://sdgs.un.org/" target="_blank">
+        <div class="content-overlay"></div>
+        <img class="content-image" src="SDG/sdg_gif.gif" alt="Global Goals">
+        <div class="content-details fadeIn-bottom fadeIn-right">
+          <h3></h3>
+          <p></p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="content">
+      <a href="https://sdgs.un.org/" target="_blank">
+        <div class="content-overlay"></div>
+        <img class="content-image" src="SDG/sdg_gif2.gif" alt="Global Goals">
+        <div class="content-details fadeIn-bottom fadeIn-right">
+          <h3></h3>
+          <p></p>
+        </div>
+      </a>
+    </div>
   </div>
 </div>
 
-<div class="container">
-  <h3 class="title"></h3>
-  <div class="content">
-    <a href="https://www.globalgoals.org/2-zero-hunger" target="_blank">
-      <div class="content-overlay"></div>
-      <img class="content-image" src="SDG/E-WEB-Goal-02.png">
-      <div class="content-details fadeIn-top">
-        <h3> </h3>
-        <p>  </p>
-      </div>
-    </a>
+<footer>
+  <div class="footer-content">
+    <p>© 2026 <a href="https://deepakdesigns.thedteam.in/" target="_blank">Deepak Designs</a></p>
   </div>
-</div>
+</footer>
+<a href="#" id="back-to-top" title="Back to top"></a>
 
-<div class="container">
-  <h3 class="title"></h3>
-  <div class="content">
-    <a href="https://www.globalgoals.org/3-good-health-and-well-being" target="_blank">
-      <div class="content-overlay"></div>
-      <img class="content-image" src="SDG/E-WEB-Goal-03.png">
-      <div class="content-details fadeIn-left">
-        <h3> </h3>
-        <p>  </p>
-      </div>
-    </a>
-  </div>
-</div>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src="./script.js"></script>
+<script>
+// Page Loader
+$(window).on('load', function() {
+  $('.loader-bg').fadeOut('slow');
+});
 
-<div class="container">
-  <h3 class="title"></h3>
-  <div class="content">
-    <a href="https://www.globalgoals.org/4-quality-education" target="_blank">
-      <div class="content-overlay"></div>
-      <img class="content-image" src="SDG/E-WEB-Goal-04.png">
-      <div class="content-details fadeIn-right">
-        <h3> </h3>
-        <p>  </p>
-      </div>
-    </a>
-  </div>
-</div>
+$(document).ready(function(){
+  // Disable right-click on images
+  $('img').on('contextmenu', function(e) {
+    return false;
+  });
 
-<div class="container">
-  <h3 class="title"></h3>
-  <div class="content">
-    <a href="https://www.globalgoals.org/5-gender-equality" target="_blank">
-      <div class="content-overlay"></div>
-      <img class="content-image" src="SDG/E-WEB-Goal-05.png">
-      <div class="content-details fadeIn-top fadeIn-left">
-        <h3> </h3>
-        <p>  </p>
-      </div>
-    </a>
-  </div>
-</div>
+  // Back to top button
+  $(window).scroll(function() {
+    if ($(this).scrollTop() > 100) {
+      $('#back-to-top').fadeIn();
+    } else {
+      $('#back-to-top').fadeOut();
+    }
+  });
+  $('#back-to-top').click(function() {
+    $('html, body').animate({scrollTop : 0}, 800, 'swing');
+    return false;
+  });
+});
+</script>
 
-<div class="container">
-  <h3 class="title"></h3>
-  <div class="content">
-    <a href="https://www.globalgoals.org/6-clean-water-and-sanitation" target="_blank">
-      <div class="content-overlay"></div>
-      <img class="content-image" src="SDG/E-WEB-Goal-06.png">
-      <div class="content-details fadeIn-top fadeIn-right">
-        <h3> </h3>
-        <p>  </p>
-      </div>
-    </a>
-  </div>
-</div>
-
-<div class="container">
-  <h3 class="title"></h3>
-  <div class="content">
-    <a href="https://www.globalgoals.org/7-affordable-and-clean-energy" target="_blank">
-      <div class="content-overlay"></div>
-      <img class="content-image" src="SDG/E-WEB-Goal-07.png">
-      <div class="content-details fadeIn-bottom fadeIn-left">
-        <h3> </h3>
-        <p>  </p>
-      </div>
-    </a>
-  </div>
-</div>
-
-<div class="container">
-  <h3 class="title"></h3>
-  <div class="content">
-    <a href="https://www.globalgoals.org/8-decent-work-and-economic-growth" target="_blank">
-      <div class="content-overlay"></div>
-      <img class="content-image" src="SDG/E-WEB-Goal-08.png">
-      <div class="content-details fadeIn-bottom fadeIn-right">
-        <h3> </h3>
-        <p>  </p>
-      </div>
-    </a>
-  </div>
-</div>
-
-<div class="container">
-  <h3 class="title"></h3>
-  <div class="content">
-    <a href="https://www.globalgoals.org/9-industry-innovation-and-infrastructure" target="_blank">
-      <div class="content-overlay"></div>
-      <img class="content-image" src="SDG/E-WEB-Goal-09.png">
-      <div class="content-details fadeIn-bottom">
-        <h3 class="content-title"> </h3>
-        <p class="content-text">  </p>
-      </div>
-    </a>
-  </div>
-</div>
-
-<div class="container">
-  <h3 class="title"></h3>
-  <div class="content">
-    <a href="https://www.globalgoals.org/10-reduced-inequalities" target="_blank">
-      <div class="content-overlay"></div>
-      <img class="content-image" src="SDG/E-WEB-Goal-10.png">
-      <div class="content-details fadeIn-top">
-        <h3> </h3>
-        <p>  </p>
-      </div>
-    </a>
-  </div>
-</div>
-
-<div class="container">
-  <h3 class="title"></h3>
-  <div class="content">
-    <a href="https://www.globalgoals.org/11-sustainable-cities-and-communities" target="_blank">
-      <div class="content-overlay"></div>
-      <img class="content-image" src="SDG/E-WEB-Goal-11.png">
-      <div class="content-details fadeIn-left">
-        <h3> </h3>
-        <p>  </p>
-      </div>
-    </a>
-  </div>
-</div>
-
-<div class="container">
-  <h3 class="title"></h3>
-  <div class="content">
-    <a href="https://www.globalgoals.org/12-responsible-consumption-and-production" target="_blank">
-      <div class="content-overlay"></div>
-      <img class="content-image" src="SDG/E-WEB-Goal-12.png">
-      <div class="content-details fadeIn-right">
-        <h3> </h3>
-        <p>  </p>
-      </div>
-    </a>
-  </div>
-</div>
-
-<div class="container">
-  <h3 class="title"></h3>
-  <div class="content">
-    <a href="https://www.globalgoals.org/13-climate-action" target="_blank">
-      <div class="content-overlay"></div>
-      <img class="content-image" src="SDG/E-WEB-Goal-13.png">
-      <div class="content-details fadeIn-top fadeIn-left">
-        <h3> </h3>
-        <p>  </p>
-      </div>
-    </a>
-  </div>
-</div>
-
-<div class="container">
-  <h3 class="title"></h3>
-  <div class="content">
-    <a href="https://www.globalgoals.org/14-life-below-water" target="_blank">
-      <div class="content-overlay"></div>
-      <img class="content-image" src="SDG/E-WEB-Goal-14.png">
-      <div class="content-details fadeIn-top fadeIn-right">
-        <h3> </h3>
-        <p>  </p>
-      </div>
-    </a>
-  </div>
-</div>
-
-<div class="container">
-  <h3 class="title"></h3>
-  <div class="content">
-    <a href="https://www.globalgoals.org/15-life-on-land" target="_blank">
-      <div class="content-overlay"></div>
-      <img class="content-image" src="SDG/E-WEB-Goal-15.png">
-      <div class="content-details fadeIn-bottom fadeIn-left">
-        <h3> </h3>
-        <p>  </p>
-      </div>
-    </a>
-  </div>
-</div>
-
-<div class="container">
-  <h3 class="title"></h3>
-  <div class="content">
-    <a href="https://www.globalgoals.org/16-peace-justice-and-strong-institutions" target="_blank">
-      <div class="content-overlay"></div>
-      <img class="content-image" src="SDG/E-WEB-Goal-16.png">
-      <div class="content-details fadeIn-bottom fadeIn-right">
-        <h3> </h3>
-        <p>  </p>
-      </div>
-    </a>
-  </div>
-</div>
-
-<div class="container">
-  <h3 class="title"></h3>
-  <div class="content">
-    <a href="https://www.globalgoals.org/17-partnerships-for-the-goals" target="_blank">
-      <div class="content-overlay"></div>
-      <img class="content-image" src="SDG/E-WEB-Goal-17.png">
-      <div class="content-details fadeIn-bottom fadeIn-right">
-        <h3> </h3>
-        <p>  </p>
-      </div>
-    </a>
-  </div>
-</div>
-
-<div class="container">
-  <h3 class="title"></h3>
-  <div class="content">
-    <a href="#top" target="_self">
-      <div class="content-overlay"></div>
-      <img class="content-image" src="SDG/globalgoals.png">
-      <div class="content-details fadeIn-bottom fadeIn-right">
-        <h3> </h3>
-        <p>  </p>
-      </div>
-    </a>
-  </div>
-</div>
-
-<!-- partial -->
-  
 </body>
 </html>

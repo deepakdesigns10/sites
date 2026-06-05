@@ -124,7 +124,7 @@ nav ul li ul li a {
 #nav-toggle span:after {
   cursor: pointer;
   border-radius: 1px;
-  height: 5px;
+  height: 3px;
   width: 35px;
   background: #ffffff;
   position: absolute;
@@ -286,4 +286,3 @@ body{
 .fadeIn-right{
   left: 80%;
 }
-
