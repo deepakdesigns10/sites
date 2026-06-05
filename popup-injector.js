@@ -77,43 +77,6 @@
             display: block;
         }
 
-        .modal-content {
-            padding: 30px 25px;
-            text-align: center;
-        }
-
-        .modal-content h2 {
-            margin: 0 0 10px;
-            color: var(--text-main);
-            font-size: 24px;
-            font-family: system-ui, -apple-system, sans-serif;
-        }
-
-        .modal-content p {
-            margin: 0 0 25px;
-            color: var(--text-muted);
-            font-size: 15px;
-            line-height: 1.5;
-            font-family: system-ui, -apple-system, sans-serif;
-        }
-
-        .modal-btn {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            font-size: 16px;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            width: 100%;
-            transition: background 0.2s ease;
-            font-family: system-ui, -apple-system, sans-serif;
-        }
-
-        .modal-btn:hover {
-            background: #4338CA;
-        }
     `;
     document.head.appendChild(style);
 
@@ -122,13 +85,9 @@
         <div class="modal-overlay" id="centralizedModalOverlay">
             <div class="modal-container">
                 <button class="modal-close" id="centralCloseBtn">&times;</button>
-                <img class="modal-image" src="https://lh3.googleusercontent.com/geougc/AF1QipMFDipAek-xqk8vUugWiO4SqTr0TwOP7qoepqJ7=h305-no" alt="Special Offer">
-                
-                <div class="modal-content">
-                    <h2>Special Announcement!</h2>
-                    <p>We just launched our new feature. Join thousands of users who are already upgrading their workflow today.</p>
-                    <button class="modal-btn" onclick="alert('Button Clicked!')">Learn More</button>
-                </div>
+                <a href="https://www.thedteam.in" target="_blank">
+                    <img class="modal-image" src="https://lh3.googleusercontent.com/geougc/AF1QipMFDipAek-xqk8vUugWiO4SqTr0TwOP7qoepqJ7=h305-no" alt="Special Offer" draggable="false">
+                </a>
             </div>
         </div>
     `;
