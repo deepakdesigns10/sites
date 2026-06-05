@@ -1,4 +1,11 @@
 (function() {
+    // Set the expiration date (YYYY-MM-DDTHH:MM:SS format).
+    // Example: '2026-06-06T00:00:00' disables it at exactly 12:00 AM on June 6th.
+    const expirationDate = new Date('2026-06-06T00:00:00'); 
+    if (new Date() >= expirationDate) {
+        return; // Exit the script entirely; the popup will not be injected or shown
+    }
+
     // 1. Inject the exact same CSS
     const style = document.createElement('style');
     style.innerHTML = `
@@ -133,6 +140,6 @@
     // Automatically close the modal after 8 seconds (8000ms)
     autoDismissTimeout = setTimeout(() => {
     closeModal();
-    }, 36000);
+    }, 36999);
 
 })();
