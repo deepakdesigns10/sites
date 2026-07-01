@@ -53,7 +53,16 @@
   <p>Oops! The page you are looking for does not exist or has been moved.</p>
   <a href="deepakdesigns.html" style="padding: 10px 20px; background-color: #343a40; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">Return to Homepage</a>
   <div class="footer-credits">
-    ©2026 <a href="deepakdesigns.html">Deepak Designs</a>
+    ©<span id="copyright-year">2026</span> <a href="deepakdesigns.html">Deepak Designs</a>
   </div>
+  <script>
+  // --- Dynamic Copyright Year ---
+  (function() {
+  const yearSpan = document.getElementById('copyright-year');
+  if (yearSpan) {
+  yearSpan.textContent = new Date().getFullYear();
+  }
+  })();
+  </script>
 </body>
 </html>

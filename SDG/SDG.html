@@ -567,7 +567,7 @@
 
 <footer>
   <div class="footer-content">
-    <p>© 2026 <a href="https://deepakdesigns.thedteam.in/" target="_blank">Deepak Designs</a></p>
+    <p>© <span id="copyright-year">2026</span> <a href="https://deepakdesigns.thedteam.in/" target="_blank">Deepak Designs</a></p>
   </div>
 </footer>
 <a href="#" id="back-to-top" title="Back to top"></a>
@@ -599,6 +599,14 @@ $(document).ready(function(){
     return false;
   });
 });
+
+// --- Dynamic Copyright Year ---
+(function() {
+const yearSpan = document.getElementById('copyright-year');
+if (yearSpan) {
+yearSpan.textContent = new Date().getFullYear();
+}
+})();
 </script>
 
 </body>

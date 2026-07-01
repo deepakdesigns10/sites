@@ -65,6 +65,15 @@
   <h2>Page Not Found</h2>
   <p>Oops! The page you're looking for doesn't exist or has been moved..</p>
   <a href="index.html">Return to Homepage</a>
-  <div class="footer">&copy; 2026 <a href="https://deepakdesigns.thedteam.in/" target="_blank">Deepak Designs</a></div>
+  <div class="footer">&copy; <span id="copyright-year">2026</span> <a href="https://deepakdesigns.thedteam.in/" target="_blank">Deepak Designs</a></div>
+  <script>
+  // --- Dynamic Copyright Year ---
+  (function() {
+  const yearSpan = document.getElementById('copyright-year');
+  if (yearSpan) {
+  yearSpan.textContent = new Date().getFullYear();
+  }
+  })();
+  </script>
 </body>
 </html>

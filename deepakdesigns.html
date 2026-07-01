@@ -515,7 +515,7 @@ document.onkeydown = function (event) {
                     </div></div>
             </div>
             <div class="row row-copirayt">
-                <p class="mbr-text mb-0 mbr-fonts-style mbr-white align-center display-7">©2026 <a href="#top" class="text-success">Deepak Designs 🧡🤍💚</p>
+                <p class="mbr-text mb-0 mbr-fonts-style mbr-white align-center display-7">©<span id="copyright-year">2026</span> <a href="#top" class="text-success">Deepak Designs 🧡🤍💚</p>
             </div>
         </div>
     </div>
@@ -589,6 +589,16 @@ Your browser does not support the audio element.
          });
          
       </script> 
+
+  <script>
+  // --- Dynamic Copyright Year ---
+  (function() {
+  const yearSpan = document.getElementById('copyright-year');
+  if (yearSpan) {
+  yearSpan.textContent = new Date().getFullYear();
+  }
+  })();
+  </script>
 
 
 </body>
