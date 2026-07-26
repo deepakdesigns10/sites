@@ -150,6 +150,6 @@
     // Automatically close the modal after 8 seconds (8000ms)
     autoDismissTimeout = setTimeout(() => {
     closeModal();
-    }, 36999);
+    }, 39999);
 
 })();
