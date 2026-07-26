@@ -77,6 +77,22 @@
             display: block;
         }
 
+        .dd-modal-link {
+            position: relative;
+            display: block;
+        }
+
+        .dd-watermark {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            width: 40px;
+            height: auto;
+            opacity: 0.9;
+            pointer-events: none;
+            z-index: 5;
+        }
+
     `;
     document.head.appendChild(style);
 
@@ -85,8 +101,9 @@
         <div class="dd-modal-overlay" id="centralizedModalOverlay">
             <div class="dd-modal-container">
                 <button class="dd-modal-close" id="centralCloseBtn">&times;</button>
-                <a href="https://www.thedteam.in" target="_blank">
+                <a href="https://www.thedteam.in" target="_blank" class="dd-modal-link">
                     <img class="dd-modal-image" src="https://scontent.fblr4-2.fna.fbcdn.net/v/t39.99422-6/756846664_1084736924118949_8855947660960650859_n.png?stp=dst-jpg_tt6&cstp=mx1080x1350&ctp=s1080x1350&_nc_cat=1&ccb=1-7&_nc_sid=127cfc&_nc_ohc=ImzrojjUIKUQ7kNvwFy6aDz&_nc_oc=Adq3cro4GdEnvbJyOHlh3zCZL1UDbKUQA8I5fTnOnDAXc2GE5voHK-x2UHyfG_0dXwL9gH44SNsZVRDLNLDQ_cpP&_nc_zt=14&_nc_ht=scontent.fblr4-2.fna&_nc_gid=u_eu8kA3K4w4Y7f_WYVcQQ&_nc_ss=7b2a8&oh=00_AQCjykF456OWsnUM2tuDO9ywZL8fZ6AVcbzkdHmfrOx72Q&oe=6A6B732F" alt="Special Offer" draggable="false">
+                    <img class="dd-watermark" src="https://client.thedteam.in/assets/images/favicon.png" alt="Watermark" draggable="false">
                 </a>
             </div>
         </div>
