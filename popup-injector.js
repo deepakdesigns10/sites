@@ -1,7 +1,7 @@
 (function() {
     // Set the expiration date (YYYY-MM-DDTHH:MM:SS format).
-    // Example: '2026-07-27T00:00:00' disables it at exactly 12:00 AM on July 27th.
-    const expirationDate = new Date('2026-07-27T00:00:00'); 
+    // Example: '2026-07-30T00:00:00' disables it at exactly 12:00 AM on July 30th.
+    const expirationDate = new Date('2026-07-30T00:00:00'); 
     if (new Date() >= expirationDate) {
         return; // Exit the script entirely; the popup will not be injected or shown
     }
@@ -102,7 +102,7 @@
             <div class="dd-modal-container">
                 <button class="dd-modal-close" id="centralCloseBtn">&times;</button>
                 <a href="https://www.thedteam.in" target="_blank" class="dd-modal-link">
-                    <img class="dd-modal-image" src="https://scontent.fblr4-2.fna.fbcdn.net/v/t39.99422-6/756846664_1084736924118949_8855947660960650859_n.png?stp=dst-jpg_tt6&cstp=mx1080x1350&ctp=s1080x1350&_nc_cat=1&ccb=1-7&_nc_sid=127cfc&_nc_ohc=ImzrojjUIKUQ7kNvwFy6aDz&_nc_oc=Adq3cro4GdEnvbJyOHlh3zCZL1UDbKUQA8I5fTnOnDAXc2GE5voHK-x2UHyfG_0dXwL9gH44SNsZVRDLNLDQ_cpP&_nc_zt=14&_nc_ht=scontent.fblr4-2.fna&_nc_gid=u_eu8kA3K4w4Y7f_WYVcQQ&_nc_ss=7b2a8&oh=00_AQCjykF456OWsnUM2tuDO9ywZL8fZ6AVcbzkdHmfrOx72Q&oe=6A6B732F" alt="Special Offer" draggable="false">
+                    <img class="dd-modal-image" src="https://scontent.fblr20-4.fna.fbcdn.net/v/t51.82787-15/758553574_18482295250099348_2738112029667664186_n.webp?stp=dst-jpg_tt6&cstp=mx1080x1080&ctp=s1080x1080&_nc_cat=103&ccb=1-7&_nc_sid=127cfc&_nc_ohc=PSN6n_HALBIQ7kNvwFUmcBf&_nc_oc=AdoUHKvjlmsGYH3rGniMirMdtWcJjYCc2ncm-3c7BS8snt89a4MAmJrVgurSkZ1zRn4vOhq94YmzcBNC26txz0dK&_nc_zt=23&_nc_ht=scontent.fblr20-4.fna&_nc_gid=3Y2yBCGOG85VO30WynNTYg&_nc_ss=7b2a8&oh=00_AQAE3icEfpip1ll_1rI3MkpH5rJh78dagmtQqnMfJLJsiw&oe=6A6F7645" alt="Special Offer" draggable="false">
                     <img class="dd-watermark" src="https://client.thedteam.in/assets/images/favicon.png" alt="Watermark" draggable="false">
                 </a>
             </div>
