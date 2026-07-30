@@ -1,7 +1,7 @@
 (function() {
     // Set the expiration date (YYYY-MM-DDTHH:MM:SS format).
-    // Example: '2026-07-30T00:00:00' disables it at exactly 12:00 AM on July 30th.
-    const expirationDate = new Date('2026-07-30T00:00:00'); 
+    // Example: '2026-07-31T00:00:00' disables it at exactly 12:00 AM on July 31st.
+    const expirationDate = new Date('2026-07-31T00:00:00'); 
     if (new Date() >= expirationDate) {
         return; // Exit the script entirely; the popup will not be injected or shown
     }
@@ -102,8 +102,8 @@
             <div class="dd-modal-container">
                 <button class="dd-modal-close" id="centralCloseBtn">&times;</button>
                 <a href="https://www.thedteam.in" target="_blank" class="dd-modal-link">
-                    <img class="dd-modal-image" src="https://scontent.fblr20-4.fna.fbcdn.net/v/t51.82787-15/758553574_18482295250099348_2738112029667664186_n.webp?stp=dst-jpg_tt6&cstp=mx1080x1080&ctp=s1080x1080&_nc_cat=103&ccb=1-7&_nc_sid=127cfc&_nc_ohc=PSN6n_HALBIQ7kNvwFUmcBf&_nc_oc=AdoUHKvjlmsGYH3rGniMirMdtWcJjYCc2ncm-3c7BS8snt89a4MAmJrVgurSkZ1zRn4vOhq94YmzcBNC26txz0dK&_nc_zt=23&_nc_ht=scontent.fblr20-4.fna&_nc_gid=3Y2yBCGOG85VO30WynNTYg&_nc_ss=7b2a8&oh=00_AQAE3icEfpip1ll_1rI3MkpH5rJh78dagmtQqnMfJLJsiw&oe=6A6F7645" alt="Special Offer" draggable="false">
-                    <img class="dd-watermark" src="https://client.thedteam.in/assets/images/favicon.png" alt="Watermark" draggable="false">
+                    <img class="dd-modal-image" src="https://scontent.fblr20-2.fna.fbcdn.net/v/t51.82787-15/758543286_18482473153099348_7640469806003311170_n.webp?stp=dst-jpg_tt6&cstp=mx1080x1080&ctp=s1080x1080&_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_ohc=QhTxbceen9kQ7kNvwHjO2OA&_nc_oc=AdqAyRSTjksP_IPXLCq1bWhbiAjcxQX9AEtjr8Dnoe96n-JIJJJ04BhvYevaLXiJ4kk&_nc_zt=23&_nc_ht=scontent.fblr20-2.fna&_nc_gid=fDuHTQNEOPfVxFA3mcHwhQ&_nc_ss=7a2a8&oh=00_AQG6b5aq29PcT7ZXdZjuAAn07cVMNb0f2gPvw2trdMeFlw&oe=6A709E7D" alt="Special Offer" draggable="false" oncontextmenu="return false;">
+                    <img class="dd-watermark" src="https://client.thedteam.in/assets/images/favicon.png" alt="Watermark" draggable="false" oncontextmenu="return false;">
                 </a>
             </div>
         </div>
