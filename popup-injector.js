@@ -1,7 +1,7 @@
 (function() {
     // Set the expiration date (YYYY-MM-DDTHH:MM:SS format).
     // Example: '2026-07-31T00:00:00' disables it at exactly 12:00 AM on July 31st.
-    const expirationDate = new Date('2026-07-31T00:00:00'); 
+    const expirationDate = new Date('2026-08-03T00:00:00'); 
     if (new Date() >= expirationDate) {
         return; // Exit the script entirely; the popup will not be injected or shown
     }
