@@ -297,7 +297,7 @@ Paid via: ${mode}`;
       if (dueAmount > 0) {
         const upiId = "7019043569-1@okbizaxis"; // Replace with your actual UPI ID
         const payeeName = "Deepak Designs";
-        finalQrData = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${dueAmount.toFixed(2)}&cu=INR&tn=${encodeURIComponent(inv)}`;
+        finalQrData = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${dueAmount.toFixed(2)}&cu=INR&tn=${encodeURIComponent('Deepak Design ' + inv)}`;
         if (qrHelpText) qrHelpText.style.display = "block";
       } else {
         if (qrHelpText) qrHelpText.style.display = "none";
