@@ -1,7 +1,7 @@
 (function() {
     // Set the expiration date (YYYY-MM-DDTHH:MM:SS format).
-    // Example: '2026-08-16T00:00:00' disables it at exactly 12:00 AM on August 16th.
-    const expirationDate = new Date('2026-08-16T00:00:00'); 
+    // Example: '2026-08-22T00:00:00' disables it at exactly 12:00 AM on August 22th.
+    const expirationDate = new Date('2026-08-22T00:00:00'); 
     if (new Date() >= expirationDate) {
         return; // Exit the script entirely; the popup will not be injected or shown
     }
@@ -102,7 +102,7 @@
             <div class="dd-modal-container">
                 <button class="dd-modal-close" id="centralCloseBtn">&times;</button>
                 <a href="https://www.thedteam.in" target="_blank" class="dd-modal-link">
-                    <img class="dd-modal-image" src="https://scontent.fblr4-3.fna.fbcdn.net/v/t39.30808-6/774469260_1487195220093362_3354052212558491418_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x2048&ctp=p526x296&_nc_cat=100&ccb=1-7&_nc_sid=833d8c&_nc_ohc=dA-N4JV0yfsQ7kNvwHKww-t&_nc_oc=AdrN3KTrACqp6lkycviZV59BQsJGpAA2swiQPzGDtOoEfqitGdL8xmM9tdPQ-xmSINpu-tddXO0IhEG10WQUDz2h&_nc_zt=23&_nc_ht=scontent.fblr4-3.fna&_nc_gid=-gi934o5UhE_ihckj4OH9w&_nc_ss=7b2a8&oh=00_AQFqyfA3R0d1FRGCGuiuBsU3Xh7aPj5GFPP5c0WQcow9sQ&oe=6A85F8E7" alt="Special Offer" draggable="false" oncontextmenu="return false;">
+                    <img class="dd-modal-image" src="https://scontent.fblr20-4.fna.fbcdn.net/v/t39.30808-6/782413183_1492475976231953_4510760535366811714_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x2048&ctp=s2048x2048&_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_ohc=kp-5ZNoXOVwQ7kNvwHt7uXu&_nc_oc=Adqu16a1YvTqcaYbsp2wm7DFu5fuSLCFhBmNyUaMT_PNOz2CNVfCOd2CLQ87Xd4bDg6le3HIQ9ynyv0RvIcFStXU&_nc_zt=23&_nc_ht=scontent.fblr20-4.fna&_nc_gid=zjJXhCDjhDWnfOMGC3DjLg&_nc_ss=7b2a8&oh=00_AQGw7Oi84E2VtEL0dz7kklbnRvnwsurtUjJQqFoTXbll0A&oe=6A8DAA1B" alt="Special Offer" draggable="false" oncontextmenu="return false;">
                     <img class="dd-watermark" src="https://client.thedteam.in/assets/images/favicon.png" alt="Watermark" draggable="false" oncontextmenu="return false;">
                 </a>
             </div>
