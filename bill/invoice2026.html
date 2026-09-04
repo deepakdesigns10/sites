@@ -172,69 +172,164 @@
       width: 115px;
       height: 115px;
     }
+
+    /* Login Overlay */
+    #loginOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(5, 5, 5, 0.98);
+      z-index: 999999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: sans-serif;
+    }
+    body.dark-mode #loginOverlay {
+      background: rgba(26, 26, 26, 0.98);
+      color: #fff;
+    }
+    .login-box {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 350px;
+      text-align: center;
+    }
+    body.dark-mode .login-box {
+      background: #2b2b2b;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+    .login-box input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    body.dark-mode .login-box input {
+      background: #444;
+      border-color: #666;
+      color: #fff;
+    }
+    .login-box button {
+      width: 100%;
+      padding: 10px;
+      background: #000;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px 0 0 0;
+    }
+    body.dark-mode .login-box button {
+      background: #fff;
+      color: #000;
+    }
+    .login-box button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    body.dark-mode .login-box button:disabled {
+      background: #555;
+      color: #aaa;
+    }
+    #loginError {
+      color: #ff4d4d;
+      font-size: 12px;
+      margin-top: 10px;
+      display: none;
+    }
   </style>
 </head>
 <body>
-  <div id="invoice" class="invoice">
-    <img src="https://deepakdesigns.thedteam.in/assets/images/dd-logo-2025.png" alt="Logo" class="logo" crossorigin="anonymous" />
-    <div class="center bold">Deepak Designs</div>
-    <div class="center" style="font-size: smaller;">#different by designs!</div>
-    <div class="center" style="font-size: smaller">Chandapura, Bengaluru-560081 KA:29</div>
-    <div class="center" style="font-size: 9px">📞7019043569 📧deepakdesigns10@gmail.com</div>
-    <div class="center" style="font-size: 9px"><b>🔍</b>deepakdesigns.thedteam.in</div>      
-    <hr />
-    <div>Date: <span id="date" style="font-size: smaller;"></span></div>
-    <div>Invoice #: <span id="invoiceNum" contenteditable="true" style="font-size: smaller;"></span></div>
-    <div>Customer: <span id="customerName" contenteditable="true" style="font-size: smaller;">Akshith L V</span></div>
-    <div>Address: <span id="customerAddress" contenteditable="true" style="font-size: smaller;">Bengaluru-560081</span></div>
-    <div>Phone: <span id="customerPhone" contenteditable="true" style="font-size: smaller;">8296579640</span></div>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Item</th>
-          <th>Qty</th>
-          <th>Price (₹)</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="itemRows">
-        <!-- Items will be dynamically inserted here -->
-      </tbody>
-    </table>
-    <button id="addItemBtn" data-html2canvas-ignore="true">+ Add Item</button>
-
-    <div class="total">
-      <div>Subtotal: ₹<span id="subtotalAmount">0.00</span></div>
-      <div class="seal" id="sealContainer">
-  <img id="sealImage" src="https://deepakdesigns.thedteam.in/bill/paid-stamp.png" alt="Seal" crossorigin="anonymous" />
-</div>
-
-      <div>Discount: -₹<span id="discount" contenteditable="true">50.00</span></div>
-      <div>Total: ₹<span id="totalAmount">0.00</span></div>
-      <div>Paid: ₹<span id="paidAmount" contenteditable="true">0.00</span></div>
-<div>Due: ₹<span id="dueAmount">0.00</span></div>
-
-      <div>Mode: <span id="paymentMode" contenteditable="true">UPI***000</span></div>
-    </div>
-
-    <div class="footer">Thank you for designing with us!</div>
-
-    <div class="qr">
-      <img id="qrImage" src="" alt="QR Code"/>
-      <div id="qrHelpText" style="font-size: 10px; margin-top: 5px; display: none;">Scan to pay with any UPI app</div>
+  <div id="loginOverlay">
+    <div class="login-box">
+      <h2>Deepak Designs</h2>
+      <p style="font-size: 14px; margin-bottom: 20px;">Please login to access the invoice</p>
+      <form id="loginForm">
+        <input type="email" id="email" placeholder="Email Address" required />
+        <input type="password" id="password" placeholder="Password" required />
+        <button type="submit">Login</button>
+        <div id="loginError"></div>
+      </form>
     </div>
   </div>
 
-  <div class="print-btn">
-    <button onclick="window.print()">🖨️ Print</button>
-    <button id="shareBtn" onclick="shareAsDataURL()">📤 Share</button>
-    <button onclick="downloadPNG()">⬇️ Download</button>
-    <button id="darkModeToggle">🌙</button>
+  <template id="invoiceTemplate">
+    <div id="invoice" class="invoice">
+      <img src="https://deepakdesigns.thedteam.in/assets/images/dd-logo-2025.png" alt="Logo" class="logo" crossorigin="anonymous" />
+      <div class="center bold">Deepak Designs</div>
+      <div class="center" style="font-size: smaller;">#different by designs!</div>
+      <div class="center" style="font-size: smaller">Chandapura, Bengaluru-560081 KA:29</div>
+      <div class="center" style="font-size: 9px">📞7019043569 📧deepakdesigns10@gmail.com</div>
+      <div class="center" style="font-size: 9px"><b>🔍</b>deepakdesigns.thedteam.in</div>      
+      <hr />
+      <div>Date: <span id="date" style="font-size: smaller;"></span></div>
+      <div>Invoice #: <span id="invoiceNum" contenteditable="true" style="font-size: smaller;"></span></div>
+      <div>Customer: <span id="customerName" contenteditable="true" style="font-size: smaller;">Akshith L V</span></div>
+      <div>Address: <span id="customerAddress" contenteditable="true" style="font-size: smaller;">Bengaluru-560081</span></div>
+      <div>Phone: <span id="customerPhone" contenteditable="true" style="font-size: smaller;">8296579640</span></div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Qty</th>
+            <th>Price (₹)</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="itemRows">
+          <!-- Items will be dynamically inserted here -->
+        </tbody>
+      </table>
+      <button id="addItemBtn" data-html2canvas-ignore="true">+ Add Item</button>
+
+      <div class="total">
+        <div>Subtotal: ₹<span id="subtotalAmount">0.00</span></div>
+        <div class="seal" id="sealContainer">
+    <img id="sealImage" src="https://deepakdesigns.thedteam.in/bill/paid-stamp.png" alt="Seal" crossorigin="anonymous" />
   </div>
+
+        <div>Discount: -₹<span id="discount" contenteditable="true">50.00</span></div>
+        <div>Total: ₹<span id="totalAmount">0.00</span></div>
+        <div>Paid: ₹<span id="paidAmount" contenteditable="true">0.00</span></div>
+  <div>Due: ₹<span id="dueAmount">0.00</span></div>
+
+        <div>Mode: <span id="paymentMode" contenteditable="true">UPI***000</span></div>
+      </div>
+
+      <div class="footer">Thank you for designing with us!</div>
+
+      <div class="qr">
+        <img id="qrImage" src="" alt="QR Code"/>
+        <div id="qrHelpText" style="font-size: 10px; margin-top: 5px; display: none;">Scan to pay with any UPI app</div>
+      </div>
+    </div>
+
+    <div class="print-btn">
+      <button onclick="window.print()">🖨️ Print</button>
+      <button id="shareBtn" onclick="shareAsDataURL()">📤 Share</button>
+      <button onclick="downloadPNG()">⬇️ Download</button>
+      <button id="darkModeToggle">🌙</button>
+    </div>
+  </template>
+
+  <div id="appContainer"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script>
+    // Disable right-click context menu globally
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
     document.addEventListener('DOMContentLoaded', () => {
       const $ = (selector) => document.querySelector(selector);
       const $$ = (selector) => document.querySelectorAll(selector);
@@ -383,7 +478,7 @@ Paid via: ${mode}`;
         const invoiceEl = $("#invoice");
 
         if (due > 0.05) {
-          sealImage.src = "https://deepakdesigns.thedteam.in/bill/due-stamp.png";
+          sealImage.src = "https://deepakdesigns.thedteam.in/bill/due-stamp1.png";
           sealContainer.style.opacity = 0.8;
           invoiceEl.style.borderColor = "red";
           invoiceEl.style.boxShadow = "0 0 5px red";
@@ -549,9 +644,21 @@ Paid via: ${mode}`;
         }
       }
 
-      init();
+      window.startApp = () => {
+        if (document.getElementById('invoice')) return; // Already started
+        const template = document.getElementById('invoiceTemplate');
+        document.getElementById('appContainer').appendChild(template.content.cloneNode(true));
+        init();
+      };
     });
   </script>
+
+    <script>
+        const _0x4f2a = "ICA8IS0tIEZpcmViYXNlIEF1dGhlbnRpY2F0aW9uIExvZ2ljIC0tPgogIDxzY3JpcHQgdHlwZT0ibW9kdWxlIj4KICAgIGltcG9ydCB7IGluaXRpYWxpemVBcHAgfSBmcm9tICJodHRwczovL3d3dy5nc3RhdGljLmNvbS9maXJlYmFzZWpzLzEwLjcuMS9maXJlYmFzZS1hcHAuanMiOwogICAgaW1wb3J0IHsgZ2V0QXV0aCwgc2lnbkluV2l0aEVtYWlsQW5kUGFzc3dvcmQsIG9uQXV0aFN0YXRlQ2hhbmdlZCwgc2lnbk91dCB9IGZyb20gImh0dHBzOi8vd3d3LmdzdGF0aWMuY29tL2ZpcmViYXNlanMvMTAuNy4xL2ZpcmViYXNlLWF1dGguanMiOwoKICAgIC8vIFRPRE86IFBhc3RlIHlvdXIgRmlyZWJhc2UgY29uZmlnIG9iamVjdCBoZXJlIQogICAgY29uc3QgZmlyZWJhc2VDb25maWcgPSB7CiAgICBhcGlLZXk6ICJBSXphU3lDVGl2VVc3VGc2N2VUYzRlZ195UXprVGNYYkdiTlBra1EiLAogICAgYXV0aERvbWFpbjogImRlZXBhay1kZXNpZ25zLmZpcmViYXNlYXBwLmNvbSIsCiAgICBwcm9qZWN0SWQ6ICJkZWVwYWstZGVzaWducyIsCiAgICBzdG9yYWdlQnVja2V0OiAiZGVlcGFrLWRlc2lnbnMuZmlyZWJhc2VzdG9yYWdlLmFwcCIsCiAgICBtZXNzYWdpbmdTZW5kZXJJZDogIjkzMjE2NzQ2OTIyMyIsCiAgICBhcHBJZDogIjE6OTMyMTY3NDY5MjIzOndlYjo5YTNlN2MwNzI3YWI0YjRmZDc3MzgyIiwKICAgIG1lYXN1cmVtZW50SWQ6ICJHLVkzSFhGV1YwN1giCiAgfTsKCiAgICBjb25zdCBsb2dpbk92ZXJsYXkgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnbG9naW5PdmVybGF5Jyk7CiAgICBjb25zdCBsb2dpbkZvcm0gPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnbG9naW5Gb3JtJyk7CiAgICBjb25zdCBsb2dpbkVycm9yID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2xvZ2luRXJyb3InKTsKCiAgICAvLyBNYWtlIHN1cmUgRmlyZWJhc2UgZ2V0cyBjb25maWd1cmVkIGJlZm9yZSBydW5uaW5nIGF1dGggbG9naWMKICAgIGlmIChmaXJlYmFzZUNvbmZpZy5hcGlLZXkgPT09ICJZT1VSX0FQSV9LRVkiKSB7CiAgICAgIGxvZ2luRm9ybS5hZGRFdmVudExpc3RlbmVyKCdzdWJtaXQnLCAoZSkgPT4gewogICAgICAgIGUucHJldmVudERlZmF1bHQoKTsKICAgICAgICBsb2dpbkVycm9yLnRleHRDb250ZW50ID0gIkZpcmViYXNlIGNvbmZpZyBtaXNzaW5nISBBZGQgaXQgYXQgdGhlIGJvdHRvbSBvZiB0aGUgSFRNTCBmaWxlLiI7CiAgICAgICAgbG9naW5FcnJvci5zdHlsZS5kaXNwbGF5ID0gJ2Jsb2NrJzsKICAgICAgfSk7CiAgICB9IGVsc2UgewogICAgICBjb25zdCBhcHAgPSBpbml0aWFsaXplQXBwKGZpcmViYXNlQ29uZmlnKTsKICAgICAgY29uc3QgYXV0aCA9IGdldEF1dGgoYXBwKTsKCiAgICAgIGxldCBpbmFjdGl2aXR5VGltZXI7CiAgICAgIGNvbnN0IElOQUNUSVZJVFlfTElNSVRfTVMgPSA1ICogNjAgKiAxMDAwOyAvLyA1IG1pbnV0ZXMKCiAgICAgIGZ1bmN0aW9uIHJlc2V0SW5hY3Rpdml0eVRpbWVyKCkgewogICAgICAgIGNsZWFyVGltZW91dChpbmFjdGl2aXR5VGltZXIpOwogICAgICAgIGlmIChhdXRoLmN1cnJlbnRVc2VyKSB7CiAgICAgICAgICBpbmFjdGl2aXR5VGltZXIgPSBzZXRUaW1lb3V0KCgpID0+IHsKICAgICAgICAgICAgc2lnbk91dChhdXRoKTsKICAgICAgICAgIH0sIElOQUNUSVZJVFlfTElNSVRfTVMpOwogICAgICAgIH0KICAgICAgfQoKICAgICAgWydtb3VzZW1vdmUnLCAna2V5ZG93bicsICdzY3JvbGwnLCAnY2xpY2snLCAndG91Y2hzdGFydCddLmZvckVhY2goZXZ0ID0+IHsKICAgICAgICBkb2N1bWVudC5hZGRFdmVudExpc3RlbmVyKGV2dCwgcmVzZXRJbmFjdGl2aXR5VGltZXIpOwogICAgICB9KTsKCiAgICAgIC8vIExvZ291dCBhdXRvbWF0aWNhbGx5IG9uIHJlZnJlc2ggb3IgdGFiIGNsb3NlCiAgICAgIHdpbmRvdy5hZGRFdmVudExpc3RlbmVyKCdiZWZvcmV1bmxvYWQnLCAoKSA9PiB7CiAgICAgICAgc2lnbk91dChhdXRoKTsKICAgICAgfSk7CgogICAgICBvbkF1dGhTdGF0ZUNoYW5nZWQoYXV0aCwgKHVzZXIpID0+IHsKICAgICAgICBpZiAodXNlcikgewogICAgICAgICAgbG9naW5PdmVybGF5LnN0eWxlLmRpc3BsYXkgPSAnbm9uZSc7CiAgICAgICAgICBpZiAod2luZG93LnN0YXJ0QXBwKSB3aW5kb3cuc3RhcnRBcHAoKTsKICAgICAgICAgIHJlc2V0SW5hY3Rpdml0eVRpbWVyKCk7CiAgICAgICAgfSBlbHNlIHsKICAgICAgICAgIGxvZ2luT3ZlcmxheS5zdHlsZS5kaXNwbGF5ID0gJ2ZsZXgnOwogICAgICAgICAgLy8gSGlkZSBpbnZvaWNlIGNvbnRlbnRzIGltbWVkaWF0ZWx5CiAgICAgICAgICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnYXBwQ29udGFpbmVyJykuaW5uZXJIVE1MID0gJyc7CiAgICAgICAgICBjbGVhclRpbWVvdXQoaW5hY3Rpdml0eVRpbWVyKTsKICAgICAgICB9CiAgICAgIH0pOwoKICAgICAgbG9naW5Gb3JtLmFkZEV2ZW50TGlzdGVuZXIoJ3N1Ym1pdCcsIChlKSA9PiB7CiAgICAgICAgZS5wcmV2ZW50RGVmYXVsdCgpOwogICAgICAgIGNvbnN0IGVtYWlsID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2VtYWlsJykudmFsdWU7CiAgICAgICAgY29uc3QgcGFzc3dvcmQgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgncGFzc3dvcmQnKS52YWx1ZTsKICAgICAgICBjb25zdCBzdWJtaXRCdG4gPSBsb2dpbkZvcm0ucXVlcnlTZWxlY3RvcignYnV0dG9uW3R5cGU9InN1Ym1pdCJdJyk7CiAgICAgICAgY29uc3Qgb3JpZ2luYWxUZXh0ID0gc3VibWl0QnRuLmlubmVyVGV4dDsKICAgICAgICAKICAgICAgICBzdWJtaXRCdG4uaW5uZXJUZXh0ID0gIuKPsyBMb2dnaW5nIGluLi4uIjsKICAgICAgICBzdWJtaXRCdG4uZGlzYWJsZWQgPSB0cnVlOwogICAgICAgIAogICAgICAgIHNpZ25JbldpdGhFbWFpbEFuZFBhc3N3b3JkKGF1dGgsIGVtYWlsLCBwYXNzd29yZCkKICAgICAgICAgIC50aGVuKCgpID0+IHsKICAgICAgICAgICAgc3VibWl0QnRuLmlubmVyVGV4dCA9IG9yaWdpbmFsVGV4dDsKICAgICAgICAgICAgc3VibWl0QnRuLmRpc2FibGVkID0gZmFsc2U7CiAgICAgICAgICAgIGxvZ2luT3ZlcmxheS5zdHlsZS5kaXNwbGF5ID0gJ25vbmUnOwogICAgICAgICAgICBsb2dpbkVycm9yLnN0eWxlLmRpc3BsYXkgPSAnbm9uZSc7CiAgICAgICAgICAgIGlmICh3aW5kb3cuc3RhcnRBcHApIHdpbmRvdy5zdGFydEFwcCgpOwogICAgICAgICAgICByZXNldEluYWN0aXZpdHlUaW1lcigpOwogICAgICAgICAgfSkKICAgICAgICAgIC5jYXRjaCgoZXJyb3IpID0+IHsKICAgICAgICAgICAgc3VibWl0QnRuLmlubmVyVGV4dCA9IG9yaWdpbmFsVGV4dDsKICAgICAgICAgICAgc3VibWl0QnRuLmRpc2FibGVkID0gZmFsc2U7CiAgICAgICAgICAgIGxvZ2luRXJyb3IudGV4dENvbnRlbnQgPSAiTG9naW4gZmFpbGVkOiAiICsgZXJyb3IubWVzc2FnZTsKICAgICAgICAgICAgbG9naW5FcnJvci5zdHlsZS5kaXNwbGF5ID0gJ2Jsb2NrJzsKICAgICAgICAgIH0pOwogICAgICB9KTsKCiAgICAgIHdpbmRvdy5sb2dvdXRGaXJlYmFzZSA9ICgpID0+IHNpZ25PdXQoYXV0aCk7CiAgICB9CiAgPC9zY3JpcHQ+";
+        document.open();
+        document.write(decodeURIComponent(escape(window.atob(_0x4f2a))));
+        document.close();
+    </script>
 
 </body>
 </html>
