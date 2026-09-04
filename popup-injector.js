@@ -56,18 +56,21 @@
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            font-size: 20px;
+            font-size: 22px;
+            line-height: 1;
+            padding: 0 0 2px 0;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #333;
-            transition: background 0.2s ease;
+            transition: all 0.3s ease;
             z-index: 10;
         }
 
         .dd-modal-close:hover {
             background: #f3f4f6;
+            transform: rotate(90deg);
         }
 
         .dd-modal-image {
