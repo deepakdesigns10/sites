@@ -48,29 +48,31 @@
         }
 
         .dd-modal-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(255, 255, 255, 0.8);
-            border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            font-size: 22px;
-            line-height: 1;
-            padding: 0 0 2px 0;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #333;
-            transition: all 0.3s ease;
-            z-index: 10;
+            position: absolute !important;
+            top: 15px !important;
+            right: 15px !important;
+            background: rgba(255, 255, 255, 0.8) !important;
+            border: none !important;
+            width: 32px !important;
+            height: 32px !important;
+            border-radius: 50% !important;
+            font-size: 22px !important;
+            line-height: 1 !important;
+            padding: 0 0 2px 0 !important;
+            margin: 0 !important;
+            cursor: pointer !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            color: #333 !important;
+            transition: all 0.3s ease !important;
+            z-index: 10 !important;
+            box-sizing: border-box !important;
         }
 
         .dd-modal-close:hover {
-            background: #f3f4f6;
-            transform: rotate(90deg);
+            background: #f3f4f6 !important;
+            transform: rotate(90deg) !important;
         }
 
         .dd-modal-image {
